@@ -59,7 +59,7 @@
 
     .layout{
       display:grid;
-      grid-template-columns:1fr 1.2fr;
+      grid-template-columns:minmax(0, 1.15fr) 420px;
       gap:20px;
       align-items:start;
     }
@@ -71,6 +71,19 @@
       box-shadow:var(--shadow);
       padding:20px;
       overflow:hidden;
+    }
+
+    .left-column{
+      min-width:0;
+    }
+
+    .right-column{
+      position:sticky;
+      top:16px;
+      align-self:start;
+      max-height:calc(100vh - 32px);
+      overflow:auto;
+      scrollbar-width:thin;
     }
 
     .card h2{
@@ -164,7 +177,7 @@
 
     .stats{
       display:grid;
-      grid-template-columns:repeat(5, minmax(0,1fr));
+      grid-template-columns:repeat(2, minmax(0,1fr));
       gap:14px;
       margin-bottom:18px;
     }
@@ -184,7 +197,7 @@
     }
 
     .stat p{
-      font-size:clamp(1rem, 2.5vw, 1.4rem);
+      font-size:clamp(1rem, 2.5vw, 1.35rem);
       font-weight:800;
       word-break:break-word;
     }
@@ -298,13 +311,21 @@
     }
 
     @media (max-width: 1200px){
-      .layout{ grid-template-columns:1fr; }
-      .stats{ grid-template-columns:repeat(3, minmax(0,1fr)); }
+      .layout{
+        grid-template-columns:1fr;
+      }
+
+      .right-column{
+        position:static;
+        top:auto;
+        max-height:none;
+        overflow:visible;
+      }
     }
 
     @media (max-width: 768px){
       .form-grid{ grid-template-columns:1fr; }
-      .stats{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+      .stats{ grid-template-columns:1fr; }
       .btn-row{ flex-direction:column; }
       .btn-row button{ width:100%; }
       .action-buttons{ flex-direction:column; }
@@ -314,7 +335,6 @@
     }
 
     @media (max-width: 520px){
-      .stats{ grid-template-columns:1fr; }
       body{ padding:12px; }
       table{ min-width:620px; }
     }
@@ -324,12 +344,12 @@
   <div class="container">
     <div class="header">
       <h1>Cash In / Cash Out Commission Tracker</h1>
-      <p>Track only cash in commission, cash out commission, and expenses. View daily, weekly, and monthly performance with net profit.</p>
+      <p>Track cash in commission, cash out commission, and expenses. The dashboard stays visible while records continue to grow.</p>
     </div>
 
     <div class="layout">
-      <!-- LEFT -->
-      <div class="card">
+      <!-- LEFT: FORM + GROWING CONTENT -->
+      <div class="left-column card">
         <h2>Add or Edit Entry</h2>
 
         <form id="recordForm">
@@ -347,10 +367,6 @@
               <label for="currency">Currency</label>
               <select id="currency" required>
                 <option value="GHS">GHS (₵)</option>
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (€)</option>
-                <option value="GBP">GBP (£)</option>
-                <option value="NGN">NGN (₦)</option>
               </select>
             </div>
 
@@ -366,7 +382,7 @@
 
             <div class="form-group full">
               <label for="note">Description / Note</label>
-              <textarea id="note" placeholder="Example: cash in commission, cash out commission, transport, food, rent, etc."></textarea>
+              <textarea id="note" placeholder="Example: cash in commission, cash out commission, transport, food, etc."></textarea>
             </div>
           </div>
 
@@ -381,13 +397,13 @@
         </form>
 
         <h3>All Entries</h3>
-        <p class="muted">Edit or delete saved cash in, cash out, and expense records.</p>
+        <p class="muted">This section grows as you add more records.</p>
         <div id="recordsContainer"></div>
       </div>
 
-      <!-- RIGHT -->
-      <div class="card">
-        <h2>Business Summary</h2>
+      <!-- RIGHT: FIXED/STICKY DASHBOARD -->
+      <div class="right-column card">
+        <h2>Dashboard</h2>
 
         <div class="stats">
           <div class="stat bg-cashin">
@@ -458,20 +474,8 @@
 
     let records = JSON.parse(localStorage.getItem("commissionTrackerRecords")) || [];
 
-    const currencySymbols = {
-      GHS: "₵",
-      USD: "$",
-      EUR: "€",
-      GBP: "£",
-      NGN: "₦"
-    };
-
-    function getCurrencySymbol(code) {
-      return currencySymbols[code] || code + " ";
-    }
-
-    function formatMoney(value, code = "GHS") {
-      return `${getCurrencySymbol(code)}${Number(value).toLocaleString(undefined, {
+    function formatMoney(value) {
+      return `₵${Number(value).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       })}`;
@@ -539,7 +543,6 @@
                 <th>Date</th>
                 <th>Type</th>
                 <th>Amount</th>
-                <th>Currency</th>
                 <th>Note</th>
                 <th>Action</th>
               </tr>
@@ -566,8 +569,7 @@
           <tr>
             <td>${item.date}</td>
             <td><span class="badge ${badgeClass}">${typeLabel}</span></td>
-            <td class="${amountClass}">${formatMoney(item.amount, item.currency)}</td>
-            <td>${item.currency}</td>
+            <td class="${amountClass}">${formatMoney(item.amount)}</td>
             <td>${item.note ? item.note : "-"}</td>
             <td>
               <div class="action-buttons">
@@ -584,8 +586,6 @@
     }
 
     function renderSummary() {
-      const baseCurrency = "GHS";
-
       const cashInTotal = records
         .filter(item => item.type === "cashin")
         .reduce((sum, item) => sum + Number(item.amount), 0);
@@ -600,10 +600,10 @@
 
       const profit = cashInTotal + cashOutTotal - expenseTotal;
 
-      totalCashIn.textContent = formatMoney(cashInTotal, baseCurrency);
-      totalCashOut.textContent = formatMoney(cashOutTotal, baseCurrency);
-      totalExpenses.textContent = formatMoney(expenseTotal, baseCurrency);
-      netProfit.textContent = formatMoney(profit, baseCurrency);
+      totalCashIn.textContent = formatMoney(cashInTotal);
+      totalCashOut.textContent = formatMoney(cashOutTotal);
+      totalExpenses.textContent = formatMoney(expenseTotal);
+      netProfit.textContent = formatMoney(profit);
       totalRecords.textContent = records.length;
     }
 
@@ -650,10 +650,10 @@
           html += `
             <tr>
               <td>${date}</td>
-              <td class="amount-blue">${formatMoney(data.cashin, "GHS")}</td>
-              <td class="amount-purple">${formatMoney(data.cashout, "GHS")}</td>
-              <td class="amount-red">${formatMoney(data.expenses, "GHS")}</td>
-              <td class="${data.profit >= 0 ? 'profit-positive' : 'profit-negative'}">${formatMoney(data.profit, "GHS")}</td>
+              <td class="amount-blue">${formatMoney(data.cashin)}</td>
+              <td class="amount-purple">${formatMoney(data.cashout)}</td>
+              <td class="amount-red">${formatMoney(data.expenses)}</td>
+              <td class="${data.profit >= 0 ? 'profit-positive' : 'profit-negative'}">${formatMoney(data.profit)}</td>
             </tr>
           `;
         });
@@ -693,7 +693,7 @@
       const best = [...entries].sort((a, b) => b[1].profit - a[1].profit)[0];
 
       if (best) {
-        bestWeek.innerHTML = `<strong>Best Week:</strong> ${best[0]} with net profit of ${formatMoney(best[1].profit, "GHS")}`;
+        bestWeek.innerHTML = `<strong>Best Week:</strong> ${best[0]} with net profit of ${formatMoney(best[1].profit)}`;
       }
 
       let html = `
@@ -702,8 +702,6 @@
             <thead>
               <tr>
                 <th>Week</th>
-                <th>Cash In</th>
-                <th>Cash Out</th>
                 <th>Total Commission</th>
                 <th>Expenses</th>
                 <th>Net Profit</th>
@@ -716,11 +714,9 @@
         html += `
           <tr>
             <td>${week}</td>
-            <td class="amount-blue">${formatMoney(data.cashin, "GHS")}</td>
-            <td class="amount-purple">${formatMoney(data.cashout, "GHS")}</td>
-            <td class="amount-blue">${formatMoney(data.totalCommission, "GHS")}</td>
-            <td class="amount-red">${formatMoney(data.expenses, "GHS")}</td>
-            <td class="${data.profit >= 0 ? 'profit-positive' : 'profit-negative'}">${formatMoney(data.profit, "GHS")}</td>
+            <td class="amount-blue">${formatMoney(data.totalCommission)}</td>
+            <td class="amount-red">${formatMoney(data.expenses)}</td>
+            <td class="${data.profit >= 0 ? 'profit-positive' : 'profit-negative'}">${formatMoney(data.profit)}</td>
           </tr>
         `;
       });
@@ -757,7 +753,7 @@
       const best = [...entries].sort((a, b) => b[1].profit - a[1].profit)[0];
 
       if (best) {
-        bestMonth.innerHTML = `<strong>Best Month:</strong> ${best[0]} with net profit of ${formatMoney(best[1].profit, "GHS")}`;
+        bestMonth.innerHTML = `<strong>Best Month:</strong> ${best[0]} with net profit of ${formatMoney(best[1].profit)}`;
       }
 
       let html = `
@@ -766,8 +762,6 @@
             <thead>
               <tr>
                 <th>Month</th>
-                <th>Cash In</th>
-                <th>Cash Out</th>
                 <th>Total Commission</th>
                 <th>Expenses</th>
                 <th>Net Profit</th>
@@ -780,11 +774,9 @@
         html += `
           <tr>
             <td>${month}</td>
-            <td class="amount-blue">${formatMoney(data.cashin, "GHS")}</td>
-            <td class="amount-purple">${formatMoney(data.cashout, "GHS")}</td>
-            <td class="amount-blue">${formatMoney(data.totalCommission, "GHS")}</td>
-            <td class="amount-red">${formatMoney(data.expenses, "GHS")}</td>
-            <td class="${data.profit >= 0 ? 'profit-positive' : 'profit-negative'}">${formatMoney(data.profit, "GHS")}</td>
+            <td class="amount-blue">${formatMoney(data.totalCommission)}</td>
+            <td class="amount-red">${formatMoney(data.expenses)}</td>
+            <td class="${data.profit >= 0 ? 'profit-positive' : 'profit-negative'}">${formatMoney(data.profit)}</td>
           </tr>
         `;
       });
@@ -799,9 +791,9 @@
         return;
       }
 
-      let csv = "Date,Type,Amount,Currency,Note\n";
+      let csv = "Date,Type,Amount,Note\n";
       records.forEach(item => {
-        csv += `${item.date},${item.type},${item.amount},${item.currency},"${(item.note || "").replace(/"/g, '""')}"\n`;
+        csv += `${item.date},${item.type},${item.amount},"${(item.note || "").replace(/"/g, '""')}"\n`;
       });
 
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
