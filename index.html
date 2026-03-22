@@ -3,461 +3,342 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Responsive Sales & Expense Dashboard</title>
+  <title>Cash In / Cash Out Commission Tracker</title>
   <style>
-    :root {
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --success: #16a34a;
-      --success-dark: #15803d;
-      --warning: #f59e0b;
-      --warning-dark: #d97706;
-      --danger: #dc2626;
-      --danger-dark: #b91c1c;
-      --secondary: #475569;
-      --secondary-dark: #334155;
-      --bg: #f4f7fb;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #64748b;
-      --border: #e5e7eb;
-      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-      --radius: 18px;
+    :root{
+      --primary:#1d4ed8;
+      --primary-dark:#1e40af;
+      --success:#16a34a;
+      --danger:#dc2626;
+      --warning:#f59e0b;
+      --dark:#0f172a;
+      --muted:#64748b;
+      --bg:#f1f5f9;
+      --card:#ffffff;
+      --border:#e2e8f0;
+      --shadow:0 10px 30px rgba(15,23,42,.08);
+      --radius:18px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    html {
-      scroll-behavior: smooth;
+    body{
+      background:var(--bg);
+      color:#1e293b;
+      padding:16px;
     }
 
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      padding: 16px;
-      line-height: 1.5;
+    .container{
+      max-width:1400px;
+      margin:auto;
     }
 
-    .container {
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
+    .header{
+      background:linear-gradient(135deg, var(--dark), var(--primary));
+      color:#fff;
+      padding:24px;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      margin-bottom:20px;
     }
 
-    .header {
-      background: linear-gradient(135deg, #0f172a, #1d4ed8);
-      color: #fff;
-      padding: 24px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
+    .header h1{
+      font-size:clamp(1.5rem, 3vw, 2.2rem);
+      margin-bottom:8px;
     }
 
-    .header h1 {
-      font-size: clamp(1.5rem, 3vw, 2.2rem);
-      margin-bottom: 8px;
-      line-height: 1.2;
+    .header p{
+      opacity:.95;
+      font-size:.95rem;
     }
 
-    .header p {
-      font-size: clamp(0.92rem, 2vw, 1rem);
-      opacity: 0.95;
+    .layout{
+      display:grid;
+      grid-template-columns:1fr 1.2fr;
+      gap:20px;
+      align-items:start;
     }
 
-    .layout {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 20px;
-      align-items: start;
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:20px;
+      overflow:hidden;
     }
 
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      width: 100%;
-      overflow: hidden;
+    .card h2{
+      font-size:1.2rem;
+      margin-bottom:14px;
+      color:var(--dark);
     }
 
-    .card h2 {
-      font-size: clamp(1.1rem, 2vw, 1.4rem);
-      margin-bottom: 14px;
-      color: #0f172a;
+    .card h3{
+      font-size:1rem;
+      margin:18px 0 10px;
+      color:var(--primary);
     }
 
-    .card h3 {
-      font-size: clamp(1rem, 2vw, 1.1rem);
-      color: var(--primary);
-      margin: 18px 0 10px;
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:14px;
     }
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+    .form-group{
+      display:flex;
+      flex-direction:column;
+      min-width:0;
     }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
+    .form-group.full{
+      grid-column:1/-1;
     }
 
-    .form-group.full {
-      grid-column: 1 / -1;
+    label{
+      font-size:.92rem;
+      font-weight:600;
+      margin-bottom:6px;
+      color:#334155;
     }
 
-    label {
-      font-size: 0.92rem;
-      font-weight: 600;
-      margin-bottom: 7px;
-      color: #334155;
+    input, select, textarea{
+      width:100%;
+      padding:12px 14px;
+      border:1px solid #cbd5e1;
+      border-radius:12px;
+      font-size:.95rem;
+      outline:none;
+      background:#fff;
+      transition:.2s ease;
     }
 
-    input,
-    select,
-    textarea {
-      width: 100%;
-      min-width: 0;
-      padding: 12px 14px;
-      border: 1px solid #cbd5e1;
-      border-radius: 12px;
-      background: #fff;
-      font-size: 0.95rem;
-      outline: none;
-      transition: 0.2s ease;
+    input:focus, select:focus, textarea:focus{
+      border-color:var(--primary);
+      box-shadow:0 0 0 3px rgba(29,78,216,.12);
     }
 
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    textarea{
+      min-height:80px;
+      resize:vertical;
     }
 
-    textarea {
-      min-height: 90px;
-      resize: vertical;
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:12px;
     }
 
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
+    button{
+      border:none;
+      padding:12px 16px;
+      border-radius:12px;
+      font-size:.92rem;
+      font-weight:700;
+      cursor:pointer;
+      min-height:44px;
+      transition:.2s ease;
     }
 
-    button {
-      border: none;
-      padding: 12px 16px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: 0.2s ease;
-      min-height: 44px;
+    .btn-primary{ background:var(--primary); color:#fff; }
+    .btn-primary:hover{ background:var(--primary-dark); }
+
+    .btn-secondary{ background:#475569; color:#fff; }
+    .btn-secondary:hover{ background:#334155; }
+
+    .btn-success{ background:var(--success); color:#fff; }
+    .btn-success:hover{ background:#15803d; }
+
+    .btn-danger{ background:var(--danger); color:#fff; }
+    .btn-danger:hover{ background:#b91c1c; }
+
+    .btn-warning{ background:var(--warning); color:#fff; }
+    .btn-warning:hover{ background:#d97706; }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(5, minmax(0,1fr));
+      gap:14px;
+      margin-bottom:18px;
     }
 
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
+    .stat{
+      color:#fff;
+      border-radius:16px;
+      padding:18px;
+      box-shadow:0 8px 20px rgba(0,0,0,.08);
     }
 
-    .btn-primary:hover {
-      background: var(--primary-dark);
+    .stat h4{
+      font-size:.82rem;
+      margin-bottom:8px;
+      opacity:.95;
+      font-weight:500;
     }
 
-    .btn-success {
-      background: var(--success);
-      color: #fff;
+    .stat p{
+      font-size:clamp(1rem, 2.5vw, 1.4rem);
+      font-weight:800;
+      word-break:break-word;
     }
 
-    .btn-success:hover {
-      background: var(--success-dark);
+    .bg-cashin{ background:linear-gradient(135deg, #2563eb, #60a5fa); }
+    .bg-cashout{ background:linear-gradient(135deg, #7c3aed, #a78bfa); }
+    .bg-expense{ background:linear-gradient(135deg, #dc2626, #f87171); }
+    .bg-profit{ background:linear-gradient(135deg, #16a34a, #4ade80); }
+    .bg-records{ background:linear-gradient(135deg, #0f172a, #334155); }
+
+    .highlight{
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      color:#1e3a8a;
+      padding:14px;
+      border-radius:12px;
+      margin-bottom:12px;
+      font-size:.92rem;
+      font-weight:600;
     }
 
-    .btn-warning {
-      background: var(--warning);
-      color: #fff;
+    .muted{
+      color:var(--muted);
+      font-size:.86rem;
+      margin-bottom:8px;
     }
 
-    .btn-warning:hover {
-      background: var(--warning-dark);
+    .table-wrap{
+      width:100%;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      margin-top:10px;
+      border-radius:12px;
     }
 
-    .btn-danger {
-      background: var(--danger);
-      color: #fff;
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:760px;
+      background:#fff;
     }
 
-    .btn-danger:hover {
-      background: var(--danger-dark);
+    th, td{
+      padding:12px;
+      border-bottom:1px solid var(--border);
+      text-align:left;
+      font-size:.9rem;
+      vertical-align:top;
     }
 
-    .btn-secondary {
-      background: var(--secondary);
-      color: #fff;
+    th{
+      background:#f8fafc;
+      color:#334155;
+      font-weight:700;
+      white-space:nowrap;
     }
 
-    .btn-secondary:hover {
-      background: var(--secondary-dark);
+    tr:hover td{
+      background:#f8fbff;
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-      margin-bottom: 18px;
+    .badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.74rem;
+      font-weight:700;
+      white-space:nowrap;
     }
 
-    .stat-box {
-      border-radius: 16px;
-      padding: 18px;
-      color: #fff;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-      min-width: 0;
+    .badge-cashin{
+      background:#dbeafe;
+      color:#1d4ed8;
     }
 
-    .stat-box h4 {
-      font-size: 0.85rem;
-      margin-bottom: 8px;
-      opacity: 0.95;
-      font-weight: 500;
+    .badge-cashout{
+      background:#ede9fe;
+      color:#6d28d9;
     }
 
-    .stat-box p {
-      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-      font-weight: 700;
-      word-break: break-word;
+    .badge-expense{
+      background:#fee2e2;
+      color:#b91c1c;
     }
 
-    .sales-bg {
-      background: linear-gradient(135deg, #2563eb, #3b82f6);
+    .amount-blue{ color:#1d4ed8; font-weight:800; }
+    .amount-purple{ color:#6d28d9; font-weight:800; }
+    .amount-red{ color:#dc2626; font-weight:800; }
+    .profit-positive{ color:#15803d; font-weight:800; }
+    .profit-negative{ color:#b91c1c; font-weight:800; }
+
+    .action-buttons{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
     }
 
-    .expense-bg {
-      background: linear-gradient(135deg, #dc2626, #ef4444);
+    .action-buttons button{
+      padding:10px 12px;
+      font-size:.84rem;
     }
 
-    .profit-bg {
-      background: linear-gradient(135deg, #16a34a, #22c55e);
+    .empty{
+      text-align:center;
+      padding:24px 14px;
+      border:1px dashed #cbd5e1;
+      border-radius:12px;
+      color:var(--muted);
+      background:#f8fafc;
+      margin-top:12px;
     }
 
-    .records-bg {
-      background: linear-gradient(135deg, #0f172a, #334155);
+    @media (max-width: 1200px){
+      .layout{ grid-template-columns:1fr; }
+      .stats{ grid-template-columns:repeat(3, minmax(0,1fr)); }
     }
 
-    .highlight {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      color: #1e3a8a;
-      padding: 14px;
-      border-radius: 12px;
-      margin-bottom: 12px;
-      font-size: 0.92rem;
-      font-weight: 600;
+    @media (max-width: 768px){
+      .form-grid{ grid-template-columns:1fr; }
+      .stats{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+      .btn-row{ flex-direction:column; }
+      .btn-row button{ width:100%; }
+      .action-buttons{ flex-direction:column; }
+      .action-buttons button{ width:100%; }
+      .card, .header{ padding:16px; }
+      table{ min-width:680px; }
     }
 
-    .muted {
-      color: var(--muted);
-      font-size: 0.88rem;
-      margin-top: 4px;
-    }
-
-    .table-wrap {
-      width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      border-radius: 12px;
-      margin-top: 10px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 760px;
-      background: #fff;
-    }
-
-    th,
-    td {
-      padding: 12px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      font-size: 0.92rem;
-      vertical-align: top;
-    }
-
-    th {
-      background: #f8fafc;
-      color: #334155;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    tr:hover td {
-      background: #f8fbff;
-    }
-
-    .amount {
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .expense-amount {
-      font-weight: 700;
-      color: var(--danger);
-    }
-
-    .profit-positive {
-      color: var(--success-dark);
-      font-weight: 700;
-    }
-
-    .profit-negative {
-      color: var(--danger-dark);
-      font-weight: 700;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 6px 10px;
-      font-size: 0.75rem;
-      border-radius: 999px;
-      font-weight: 700;
-      background: #e0e7ff;
-      color: #3730a3;
-      white-space: nowrap;
-    }
-
-    .empty {
-      text-align: center;
-      background: #f8fafc;
-      border: 1px dashed #cbd5e1;
-      border-radius: 12px;
-      padding: 24px 14px;
-      color: var(--muted);
-      margin-top: 12px;
-      font-size: 0.95rem;
-    }
-
-    .action-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .action-buttons button {
-      padding: 10px 12px;
-      font-size: 0.85rem;
-      min-width: 72px;
-    }
-
-    @media (max-width: 1200px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 992px) {
-      .stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 768px) {
-      body {
-        padding: 12px;
-      }
-
-      .header,
-      .card {
-        padding: 16px;
-        border-radius: 16px;
-      }
-
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .btn-row {
-        flex-direction: column;
-      }
-
-      .btn-row button {
-        width: 100%;
-      }
-
-      .action-buttons {
-        flex-direction: column;
-      }
-
-      .action-buttons button {
-        width: 100%;
-      }
-
-      table {
-        min-width: 680px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
-      .header h1 {
-        font-size: 1.35rem;
-      }
-
-      .header p {
-        font-size: 0.9rem;
-      }
-
-      .card h2 {
-        font-size: 1.05rem;
-      }
-
-      .card h3 {
-        font-size: 0.98rem;
-      }
-
-      th,
-      td {
-        padding: 10px;
-        font-size: 0.86rem;
-      }
-
-      table {
-        min-width: 620px;
-      }
+    @media (max-width: 520px){
+      .stats{ grid-template-columns:1fr; }
+      body{ padding:12px; }
+      table{ min-width:620px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>Sales & Expense Dashboard</h1>
-      <p>Track daily sales, expenses, weekly and monthly performance, and identify your most profitable periods.</p>
+      <h1>Cash In / Cash Out Commission Tracker</h1>
+      <p>Track only cash in commission, cash out commission, and expenses. View daily, weekly, and monthly performance with net profit.</p>
     </div>
 
     <div class="layout">
+      <!-- LEFT -->
       <div class="card">
-        <h2>Add or Edit Record</h2>
+        <h2>Add or Edit Entry</h2>
 
         <form id="recordForm">
           <div class="form-grid">
             <div class="form-group">
-              <label for="recordType">Record Type</label>
+              <label for="recordType">Entry Type</label>
               <select id="recordType" required>
-                <option value="sale">Sale</option>
+                <option value="cashin">Cash In Commission</option>
+                <option value="cashout">Cash Out Commission</option>
                 <option value="expense">Expense</option>
               </select>
             </div>
@@ -485,52 +366,61 @@
 
             <div class="form-group full">
               <label for="note">Description / Note</label>
-              <textarea id="note" placeholder="Example: Shop sales, transport cost, stock purchase, etc."></textarea>
+              <textarea id="note" placeholder="Example: cash in commission, cash out commission, transport, food, rent, etc."></textarea>
             </div>
           </div>
 
           <input type="hidden" id="editId" />
 
           <div class="btn-row">
-            <button type="submit" class="btn-primary" id="submitBtn">Save Record</button>
+            <button type="submit" class="btn-primary" id="submitBtn">Save Entry</button>
             <button type="button" class="btn-secondary" id="resetBtn">Reset Form</button>
             <button type="button" class="btn-success" id="exportBtn">Export CSV</button>
             <button type="button" class="btn-danger" id="clearBtn">Clear All</button>
           </div>
         </form>
 
-        <h3>All Records</h3>
-        <p class="muted">You can edit or delete any saved record.</p>
+        <h3>All Entries</h3>
+        <p class="muted">Edit or delete saved cash in, cash out, and expense records.</p>
         <div id="recordsContainer"></div>
       </div>
 
+      <!-- RIGHT -->
       <div class="card">
         <h2>Business Summary</h2>
 
         <div class="stats">
-          <div class="stat-box sales-bg">
-            <h4>Total Sales</h4>
-            <p id="totalSales">₵0.00</p>
+          <div class="stat bg-cashin">
+            <h4>Cash In Commission</h4>
+            <p id="totalCashIn">₵0.00</p>
           </div>
 
-          <div class="stat-box expense-bg">
-            <h4>Total Expenses</h4>
+          <div class="stat bg-cashout">
+            <h4>Cash Out Commission</h4>
+            <p id="totalCashOut">₵0.00</p>
+          </div>
+
+          <div class="stat bg-expense">
+            <h4>Expenses</h4>
             <p id="totalExpenses">₵0.00</p>
           </div>
 
-          <div class="stat-box profit-bg">
+          <div class="stat bg-profit">
             <h4>Net Profit</h4>
             <p id="netProfit">₵0.00</p>
           </div>
 
-          <div class="stat-box records-bg">
-            <h4>Total Records</h4>
+          <div class="stat bg-records">
+            <h4>Total Entries</h4>
             <p id="totalRecords">0</p>
           </div>
         </div>
 
         <div id="bestWeek" class="highlight"><strong>Best Week:</strong> No data yet</div>
         <div id="bestMonth" class="highlight"><strong>Best Month:</strong> No data yet</div>
+
+        <h3>Daily Performance</h3>
+        <div id="dailySummary"></div>
 
         <h3>Weekly Performance</h3>
         <div id="weeklySummary"></div>
@@ -555,16 +445,18 @@
     const clearBtn = document.getElementById("clearBtn");
 
     const recordsContainer = document.getElementById("recordsContainer");
-    const totalSales = document.getElementById("totalSales");
+    const totalCashIn = document.getElementById("totalCashIn");
+    const totalCashOut = document.getElementById("totalCashOut");
     const totalExpenses = document.getElementById("totalExpenses");
     const netProfit = document.getElementById("netProfit");
     const totalRecords = document.getElementById("totalRecords");
+    const dailySummary = document.getElementById("dailySummary");
     const weeklySummary = document.getElementById("weeklySummary");
     const monthlySummary = document.getElementById("monthlySummary");
     const bestWeek = document.getElementById("bestWeek");
     const bestMonth = document.getElementById("bestMonth");
 
-    let records = JSON.parse(localStorage.getItem("salesExpenseRecords")) || [];
+    let records = JSON.parse(localStorage.getItem("commissionTrackerRecords")) || [];
 
     const currencySymbols = {
       GHS: "₵",
@@ -586,7 +478,37 @@
     }
 
     function saveRecords() {
-      localStorage.setItem("salesExpenseRecords", JSON.stringify(records));
+      localStorage.setItem("commissionTrackerRecords", JSON.stringify(records));
+    }
+
+    function resetForm() {
+      recordForm.reset();
+      recordType.value = "cashin";
+      currency.value = "GHS";
+      editId.value = "";
+      submitBtn.textContent = "Save Entry";
+    }
+
+    function editRecord(id) {
+      const record = records.find(item => item.id === id);
+      if (!record) return;
+
+      recordType.value = record.type;
+      currency.value = record.currency;
+      recordDate.value = record.date;
+      amount.value = record.amount;
+      note.value = record.note || "";
+      editId.value = record.id;
+      submitBtn.textContent = "Update Entry";
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function deleteRecord(id) {
+      if (!confirm("Are you sure you want to delete this entry?")) return;
+      records = records.filter(item => item.id !== id);
+      saveRecords();
+      renderAll();
     }
 
     function getWeekNumber(dateString) {
@@ -601,39 +523,9 @@
       return date.toLocaleString("default", { month: "long", year: "numeric" });
     }
 
-    function resetForm() {
-      recordForm.reset();
-      editId.value = "";
-      submitBtn.textContent = "Save Record";
-      recordType.value = "sale";
-      currency.value = "GHS";
-    }
-
-    function editRecord(id) {
-      const record = records.find(item => item.id === id);
-      if (!record) return;
-
-      recordType.value = record.type;
-      currency.value = record.currency;
-      recordDate.value = record.date;
-      amount.value = record.amount;
-      note.value = record.note || "";
-      editId.value = record.id;
-      submitBtn.textContent = "Update Record";
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function deleteRecord(id) {
-      if (!confirm("Are you sure you want to delete this record?")) return;
-      records = records.filter(item => item.id !== id);
-      saveRecords();
-      renderAll();
-    }
-
     function renderRecords() {
       if (records.length === 0) {
-        recordsContainer.innerHTML = '<div class="empty">No records available yet.</div>';
+        recordsContainer.innerHTML = '<div class="empty">No entries available yet.</div>';
         return;
       }
 
@@ -656,11 +548,25 @@
       `;
 
       sorted.forEach(item => {
+        let badgeClass = "badge-cashin";
+        let amountClass = "amount-blue";
+        let typeLabel = "Cash In";
+
+        if (item.type === "cashout") {
+          badgeClass = "badge-cashout";
+          amountClass = "amount-purple";
+          typeLabel = "Cash Out";
+        } else if (item.type === "expense") {
+          badgeClass = "badge-expense";
+          amountClass = "amount-red";
+          typeLabel = "Expense";
+        }
+
         html += `
           <tr>
             <td>${item.date}</td>
-            <td><span class="badge">${item.type === "sale" ? "Sale" : "Expense"}</span></td>
-            <td class="${item.type === "sale" ? "amount" : "expense-amount"}">${formatMoney(item.amount, item.currency)}</td>
+            <td><span class="badge ${badgeClass}">${typeLabel}</span></td>
+            <td class="${amountClass}">${formatMoney(item.amount, item.currency)}</td>
             <td>${item.currency}</td>
             <td>${item.note ? item.note : "-"}</td>
             <td>
@@ -679,17 +585,81 @@
 
     function renderSummary() {
       const baseCurrency = "GHS";
-      const salesOnly = records.filter(item => item.type === "sale");
-      const expensesOnly = records.filter(item => item.type === "expense");
 
-      const salesTotal = salesOnly.reduce((sum, item) => sum + Number(item.amount), 0);
-      const expenseTotal = expensesOnly.reduce((sum, item) => sum + Number(item.amount), 0);
-      const profit = salesTotal - expenseTotal;
+      const cashInTotal = records
+        .filter(item => item.type === "cashin")
+        .reduce((sum, item) => sum + Number(item.amount), 0);
 
-      totalSales.textContent = formatMoney(salesTotal, baseCurrency);
+      const cashOutTotal = records
+        .filter(item => item.type === "cashout")
+        .reduce((sum, item) => sum + Number(item.amount), 0);
+
+      const expenseTotal = records
+        .filter(item => item.type === "expense")
+        .reduce((sum, item) => sum + Number(item.amount), 0);
+
+      const profit = cashInTotal + cashOutTotal - expenseTotal;
+
+      totalCashIn.textContent = formatMoney(cashInTotal, baseCurrency);
+      totalCashOut.textContent = formatMoney(cashOutTotal, baseCurrency);
       totalExpenses.textContent = formatMoney(expenseTotal, baseCurrency);
       netProfit.textContent = formatMoney(profit, baseCurrency);
       totalRecords.textContent = records.length;
+    }
+
+    function renderDailySummary() {
+      if (records.length === 0) {
+        dailySummary.innerHTML = '<div class="empty">No daily summary yet.</div>';
+        return;
+      }
+
+      const dailyData = {};
+
+      records.forEach(item => {
+        const key = item.date;
+
+        if (!dailyData[key]) {
+          dailyData[key] = { cashin: 0, cashout: 0, expenses: 0, profit: 0 };
+        }
+
+        if (item.type === "cashin") dailyData[key].cashin += Number(item.amount);
+        if (item.type === "cashout") dailyData[key].cashout += Number(item.amount);
+        if (item.type === "expense") dailyData[key].expenses += Number(item.amount);
+
+        dailyData[key].profit = dailyData[key].cashin + dailyData[key].cashout - dailyData[key].expenses;
+      });
+
+      let html = `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Cash In</th>
+                <th>Cash Out</th>
+                <th>Expenses</th>
+                <th>Net Profit</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+
+      Object.entries(dailyData)
+        .sort((a, b) => new Date(b[0]) - new Date(a[0]))
+        .forEach(([date, data]) => {
+          html += `
+            <tr>
+              <td>${date}</td>
+              <td class="amount-blue">${formatMoney(data.cashin, "GHS")}</td>
+              <td class="amount-purple">${formatMoney(data.cashout, "GHS")}</td>
+              <td class="amount-red">${formatMoney(data.expenses, "GHS")}</td>
+              <td class="${data.profit >= 0 ? 'profit-positive' : 'profit-negative'}">${formatMoney(data.profit, "GHS")}</td>
+            </tr>
+          `;
+        });
+
+      html += `</tbody></table></div>`;
+      dailySummary.innerHTML = html;
     }
 
     function renderWeeklySummary() {
@@ -708,23 +678,22 @@
         const key = `Week ${week}, ${year}`;
 
         if (!weeklyData[key]) {
-          weeklyData[key] = { sales: 0, expenses: 0, profit: 0 };
+          weeklyData[key] = { cashin: 0, cashout: 0, expenses: 0, totalCommission: 0, profit: 0 };
         }
 
-        if (item.type === "sale") {
-          weeklyData[key].sales += Number(item.amount);
-        } else {
-          weeklyData[key].expenses += Number(item.amount);
-        }
+        if (item.type === "cashin") weeklyData[key].cashin += Number(item.amount);
+        if (item.type === "cashout") weeklyData[key].cashout += Number(item.amount);
+        if (item.type === "expense") weeklyData[key].expenses += Number(item.amount);
 
-        weeklyData[key].profit = weeklyData[key].sales - weeklyData[key].expenses;
+        weeklyData[key].totalCommission = weeklyData[key].cashin + weeklyData[key].cashout;
+        weeklyData[key].profit = weeklyData[key].totalCommission - weeklyData[key].expenses;
       });
 
-      const weekEntries = Object.entries(weeklyData);
-      const best = [...weekEntries].sort((a, b) => b[1].sales - a[1].sales)[0];
+      const entries = Object.entries(weeklyData);
+      const best = [...entries].sort((a, b) => b[1].profit - a[1].profit)[0];
 
       if (best) {
-        bestWeek.innerHTML = `<strong>Best Week:</strong> ${best[0]} with total sales of ${formatMoney(best[1].sales, "GHS")}`;
+        bestWeek.innerHTML = `<strong>Best Week:</strong> ${best[0]} with net profit of ${formatMoney(best[1].profit, "GHS")}`;
       }
 
       let html = `
@@ -733,20 +702,24 @@
             <thead>
               <tr>
                 <th>Week</th>
-                <th>Sales</th>
+                <th>Cash In</th>
+                <th>Cash Out</th>
+                <th>Total Commission</th>
                 <th>Expenses</th>
-                <th>Profit</th>
+                <th>Net Profit</th>
               </tr>
             </thead>
             <tbody>
       `;
 
-      weekEntries.sort((a, b) => a[0].localeCompare(b[0])).forEach(([week, data]) => {
+      entries.sort((a, b) => a[0].localeCompare(b[0])).forEach(([week, data]) => {
         html += `
           <tr>
             <td>${week}</td>
-            <td class="amount">${formatMoney(data.sales, "GHS")}</td>
-            <td class="expense-amount">${formatMoney(data.expenses, "GHS")}</td>
+            <td class="amount-blue">${formatMoney(data.cashin, "GHS")}</td>
+            <td class="amount-purple">${formatMoney(data.cashout, "GHS")}</td>
+            <td class="amount-blue">${formatMoney(data.totalCommission, "GHS")}</td>
+            <td class="amount-red">${formatMoney(data.expenses, "GHS")}</td>
             <td class="${data.profit >= 0 ? 'profit-positive' : 'profit-negative'}">${formatMoney(data.profit, "GHS")}</td>
           </tr>
         `;
@@ -769,23 +742,22 @@
         const key = getMonthLabel(item.date);
 
         if (!monthlyData[key]) {
-          monthlyData[key] = { sales: 0, expenses: 0, profit: 0 };
+          monthlyData[key] = { cashin: 0, cashout: 0, expenses: 0, totalCommission: 0, profit: 0 };
         }
 
-        if (item.type === "sale") {
-          monthlyData[key].sales += Number(item.amount);
-        } else {
-          monthlyData[key].expenses += Number(item.amount);
-        }
+        if (item.type === "cashin") monthlyData[key].cashin += Number(item.amount);
+        if (item.type === "cashout") monthlyData[key].cashout += Number(item.amount);
+        if (item.type === "expense") monthlyData[key].expenses += Number(item.amount);
 
-        monthlyData[key].profit = monthlyData[key].sales - monthlyData[key].expenses;
+        monthlyData[key].totalCommission = monthlyData[key].cashin + monthlyData[key].cashout;
+        monthlyData[key].profit = monthlyData[key].totalCommission - monthlyData[key].expenses;
       });
 
-      const monthEntries = Object.entries(monthlyData);
-      const best = [...monthEntries].sort((a, b) => b[1].sales - a[1].sales)[0];
+      const entries = Object.entries(monthlyData);
+      const best = [...entries].sort((a, b) => b[1].profit - a[1].profit)[0];
 
       if (best) {
-        bestMonth.innerHTML = `<strong>Best Month:</strong> ${best[0]} with total sales of ${formatMoney(best[1].sales, "GHS")}`;
+        bestMonth.innerHTML = `<strong>Best Month:</strong> ${best[0]} with net profit of ${formatMoney(best[1].profit, "GHS")}`;
       }
 
       let html = `
@@ -794,20 +766,24 @@
             <thead>
               <tr>
                 <th>Month</th>
-                <th>Sales</th>
+                <th>Cash In</th>
+                <th>Cash Out</th>
+                <th>Total Commission</th>
                 <th>Expenses</th>
-                <th>Profit</th>
+                <th>Net Profit</th>
               </tr>
             </thead>
             <tbody>
       `;
 
-      monthEntries.forEach(([month, data]) => {
+      entries.forEach(([month, data]) => {
         html += `
           <tr>
             <td>${month}</td>
-            <td class="amount">${formatMoney(data.sales, "GHS")}</td>
-            <td class="expense-amount">${formatMoney(data.expenses, "GHS")}</td>
+            <td class="amount-blue">${formatMoney(data.cashin, "GHS")}</td>
+            <td class="amount-purple">${formatMoney(data.cashout, "GHS")}</td>
+            <td class="amount-blue">${formatMoney(data.totalCommission, "GHS")}</td>
+            <td class="amount-red">${formatMoney(data.expenses, "GHS")}</td>
             <td class="${data.profit >= 0 ? 'profit-positive' : 'profit-negative'}">${formatMoney(data.profit, "GHS")}</td>
           </tr>
         `;
@@ -825,36 +801,28 @@
 
       let csv = "Date,Type,Amount,Currency,Note\n";
       records.forEach(item => {
-        const row = `${item.date},${item.type},${item.amount},${item.currency},"${(item.note || "").replace(/"/g, '""')}"`;
-        csv += row + "\n";
+        csv += `${item.date},${item.type},${item.amount},${item.currency},"${(item.note || "").replace(/"/g, '""')}"\n`;
       });
 
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "sales_expense_records.csv";
+      link.download = "commission_tracker_records.csv";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     }
 
     function clearAllRecords() {
-      if (!confirm("Are you sure you want to delete all records?")) return;
+      if (!confirm("Are you sure you want to delete all entries?")) return;
       records = [];
       saveRecords();
       resetForm();
       renderAll();
     }
 
-    function renderAll() {
-      renderRecords();
-      renderSummary();
-      renderWeeklySummary();
-      renderMonthlySummary();
-    }
-
-    recordForm.addEventListener("submit", function (e) {
+    recordForm.addEventListener("submit", function(e) {
       e.preventDefault();
 
       const type = recordType.value;
@@ -870,10 +838,10 @@
       }
 
       if (id) {
-        const existingIndex = records.findIndex(item => item.id === id);
-        if (existingIndex !== -1) {
-          records[existingIndex] = {
-            ...records[existingIndex],
+        const index = records.findIndex(item => item.id === id);
+        if (index !== -1) {
+          records[index] = {
+            ...records[index],
             type,
             currency: curr,
             date,
@@ -896,6 +864,14 @@
       resetForm();
       renderAll();
     });
+
+    function renderAll() {
+      renderRecords();
+      renderSummary();
+      renderDailySummary();
+      renderWeeklySummary();
+      renderMonthlySummary();
+    }
 
     resetBtn.addEventListener("click", resetForm);
     exportBtn.addEventListener("click", exportCSV);
