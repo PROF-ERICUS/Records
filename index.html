@@ -1,287 +1,863 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MoMo Tracker</title>
-
-<style>
-:root {
-  --bg:#f4f7fb;
-  --card:#fff;
-  --primary:#0f766e;
-  --accent:#14b8a6;
-  --danger:#dc2626;
-  --text:#1f2937;
-  --border:#e5e7eb;
-}
-
-body{
-  margin:0;
-  font-family:Arial;
-  background:var(--bg);
-}
-
-.app{
-  display:flex;
-  min-height:100vh;
-}
-
-.sidebar{
-  width:260px;
-  background:var(--primary);
-  color:#fff;
-  padding:20px;
-  position:sticky;
-  top:0;
-  height:100vh;
-}
-
-.main{
-  flex:1;
-  padding:20px;
-}
-
-h1,h2,h3{margin:0 0 10px;}
-
-.card{
-  background:#fff;
-  padding:15px;
-  border-radius:12px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.08);
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-  margin-bottom:20px;
-}
-
-.value{
-  font-size:22px;
-  font-weight:bold;
-}
-
-.panel{
-  background:#fff;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:20px;
-}
-
-input,select{
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  border:1px solid var(--border);
-}
-
-button{
-  padding:10px 15px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.btn-primary{background:var(--primary);color:#fff;}
-.btn-danger{background:var(--danger);color:#fff;}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-th,td{
-  padding:10px;
-  border-bottom:1px solid var(--border);
-  font-size:14px;
-}
-
-.best{
-  background:#ecfdf5;
-}
-
-@media(max-width:900px){
-  .app{flex-direction:column;}
-  .sidebar{width:100%;height:auto;}
-  .cards{grid-template-columns:1fr;}
-}
-</style>
-</head>
-
-<body>
-
-<div class="app">
-
-<div class="sidebar">
-  <h2>MoMo Tracker</h2>
-
-  <p><strong>Net:</strong> <span id="sideNet">0</span></p>
-  <p><strong>Best Day:</strong> <span id="bestDay">-</span></p>
-  <p><strong>Days:</strong> <span id="days">0</span></p>
-</div>
-
-<div class="main">
-
-<input type="month" id="monthFilter">
-
-<div class="cards">
-  <div class="card">
-    <h4>Cash-In Commission</h4>
-    <div class="value" id="cashInTotal">0</div>
-  </div>
-
-  <div class="card">
-    <h4>Cash-Out Commission</h4>
-    <div class="value" id="cashOutTotal">0</div>
-  </div>
-
-  <div class="card">
-    <h4>Expenses</h4>
-    <div class="value" id="expensesTotal">0</div>
-  </div>
-
-  <div class="card">
-    <h4>Net</h4>
-    <div class="value" id="netTotal">0</div>
-  </div>
-</div>
-
-<div class="panel">
-  <h3>Add Record</h3>
-
-  <form id="form">
-    <input type="hidden" id="id">
-
-    <label>Date</label>
-    <input type="date" id="date" required>
-
-    <label>Cash-In Commission</label>
-    <input type="number" id="cin" required>
-
-    <label>Cash-Out Commission</label>
-    <input type="number" id="cout" required>
-
-    <label>Expenses</label>
-    <input type="number" id="exp" value="0">
-
-    <br><br>
-
-    <button class="btn-primary">Save</button>
-  </form>
-</div>
-
-<div class="panel">
-  <h3>Records</h3>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Cash-In</th>
-        <th>Cash-Out</th>
-        <th>Expenses</th>
-        <th>Net</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-
-    <tbody id="table"></tbody>
-  </table>
-</div>
-
-</div>
-</div>
-
-<script>
-let data = JSON.parse(localStorage.getItem("momo") || "[]");
-
-const form = document.getElementById("form");
-
-form.onsubmit = (e)=>{
-  e.preventDefault();
-
-  const record = {
-    id: Date.now(),
-    date: date.value,
-    cin: +cin.value,
-    cout: +cout.value,
-    exp: +exp.value
-  };
-
-  data.push(record);
-  save();
-};
-
-function save(){
-  localStorage.setItem("momo", JSON.stringify(data));
-  render();
-  form.reset();
-}
-
-function render(){
-  const month = document.getElementById("monthFilter").value;
-
-  let filtered = data.filter(r=>r.date.startsWith(month));
-
-  let best = null;
-  let bestVal = -999;
-
-  let cin=0, cout=0, exp=0;
-
-  table.innerHTML="";
-
-  filtered.forEach(r=>{
-    const net = r.cin + r.cout - r.exp;
-
-    cin+=r.cin;
-    cout+=r.cout;
-    exp+=r.exp;
-
-    if(net>bestVal){
-      bestVal=net;
-      best=r.date;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoMo Tracker</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --primary:#0f766e;
+      --primary-dark:#115e59;
+      --accent:#14b8a6;
+      --danger:#dc2626;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --shadow:0 10px 24px rgba(0,0,0,0.08);
+      --radius:18px;
+      --sidebar-width:290px;
     }
 
-    const tr = document.createElement("tr");
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-    if(net===bestVal) tr.classList.add("best");
+    html,body{
+      height:100%;
+    }
 
-    tr.innerHTML=`
-      <td>${r.date}</td>
-      <td>${r.cin}</td>
-      <td>${r.cout}</td>
-      <td>${r.exp}</td>
-      <td>${net}</td>
-      <td>
-        <button onclick="del(${r.id})" class="btn-danger">Delete</button>
-      </td>
-    `;
+    body{
+      font-family:Arial, Helvetica, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
 
-    table.appendChild(tr);
-  });
+    .sidebar{
+      position:fixed;
+      left:0;
+      top:0;
+      width:var(--sidebar-width);
+      height:100vh;
+      background:linear-gradient(180deg,var(--primary),var(--primary-dark));
+      color:#fff;
+      padding:24px 18px;
+      overflow-y:auto;
+      z-index:1000;
+    }
 
-  document.getElementById("cashInTotal").innerText = cin;
-  document.getElementById("cashOutTotal").innerText = cout;
-  document.getElementById("expensesTotal").innerText = exp;
-  document.getElementById("netTotal").innerText = cin+cout-exp;
+    .brand{
+      margin-bottom:24px;
+    }
 
-  document.getElementById("sideNet").innerText = cin+cout-exp;
-  document.getElementById("bestDay").innerText = best || "-";
-  document.getElementById("days").innerText = filtered.length;
-}
+    .brand h1{
+      font-size:26px;
+      margin-bottom:6px;
+    }
 
-function del(id){
-  data = data.filter(r=>r.id!==id);
-  save();
-}
+    .brand p{
+      font-size:14px;
+      line-height:1.5;
+      color:rgba(255,255,255,0.86);
+    }
 
-document.getElementById("monthFilter").value = new Date().toISOString().slice(0,7);
+    .side-box{
+      background:rgba(255,255,255,0.10);
+      border-radius:16px;
+      padding:16px;
+      margin-bottom:16px;
+      backdrop-filter:blur(6px);
+    }
 
-render();
-</script>
+    .side-box h3{
+      font-size:14px;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+      margin-bottom:12px;
+      color:#e6fffb;
+    }
 
+    .side-stat{
+      margin-bottom:12px;
+    }
+
+    .side-stat:last-child{
+      margin-bottom:0;
+    }
+
+    .side-stat small{
+      display:block;
+      font-size:12px;
+      color:rgba(255,255,255,0.78);
+      margin-bottom:4px;
+    }
+
+    .side-stat strong{
+      display:block;
+      font-size:20px;
+      line-height:1.2;
+    }
+
+    .main{
+      margin-left:var(--sidebar-width);
+      min-height:100vh;
+      padding:24px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:20px;
+    }
+
+    .topbar h2{
+      font-size:28px;
+    }
+
+    .month-filter{
+      width:220px;
+      max-width:100%;
+      padding:12px 14px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      background:#fff;
+      font-size:15px;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:16px;
+      margin-bottom:20px;
+    }
+
+    .card,
+    .panel,
+    .table-wrap{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .card{
+      padding:18px;
+    }
+
+    .card h4{
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+
+    .card .value{
+      font-size:26px;
+      font-weight:700;
+      word-break:break-word;
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:20px;
+      margin-bottom:20px;
+      align-items:start;
+    }
+
+    .panel{
+      padding:20px;
+    }
+
+    .panel h3{
+      font-size:20px;
+      margin-bottom:16px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .field.full{
+      grid-column:1 / -1;
+    }
+
+    label{
+      font-size:14px;
+      font-weight:600;
+      color:var(--muted);
+    }
+
+    input,
+    select{
+      width:100%;
+      padding:12px 14px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      font-size:15px;
+      background:#fff;
+      outline:none;
+    }
+
+    input:focus,
+    select:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px rgba(20,184,166,0.12);
+    }
+
+    .btn-row{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      border-radius:12px;
+      padding:12px 16px;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+    }
+
+    .btn-secondary{
+      background:#e5e7eb;
+      color:var(--text);
+    }
+
+    .btn-danger{
+      background:var(--danger);
+      color:#fff;
+    }
+
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .summary-item{
+      border:1px solid var(--border);
+      background:#f9fafb;
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .summary-item small{
+      display:block;
+      color:var(--muted);
+      margin-bottom:6px;
+      font-size:13px;
+    }
+
+    .summary-item strong{
+      font-size:21px;
+      display:block;
+      word-break:break-word;
+    }
+
+    .table-wrap{
+      padding:20px;
+    }
+
+    .table-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .table-head h3{
+      font-size:20px;
+    }
+
+    .search-box{
+      width:300px;
+      max-width:100%;
+      padding:12px 14px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      background:#fff;
+      font-size:14px;
+    }
+
+    .table-container{
+      width:100%;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    table{
+      width:100%;
+      min-width:820px;
+      border-collapse:collapse;
+    }
+
+    th,td{
+      padding:12px 10px;
+      border-bottom:1px solid var(--border);
+      text-align:left;
+      font-size:14px;
+      vertical-align:top;
+    }
+
+    th{
+      background:#f9fafb;
+      color:#374151;
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+
+    tr.best-row{
+      background:#ecfdf5;
+    }
+
+    .actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .action-btn{
+      padding:8px 10px;
+      font-size:12px;
+      border-radius:10px;
+    }
+
+    .empty{
+      display:none;
+      margin-top:14px;
+      padding:18px;
+      text-align:center;
+      color:var(--muted);
+      border:1px dashed var(--border);
+      border-radius:14px;
+      background:#fafafa;
+    }
+
+    @media (max-width:1200px){
+      .cards{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .content-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:900px){
+      :root{
+        --sidebar-width:100%;
+      }
+
+      .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+      }
+
+      .main{
+        margin-left:0;
+        padding:16px;
+      }
+
+      .topbar h2{
+        font-size:24px;
+      }
+    }
+
+    @media (max-width:640px){
+      .cards{
+        grid-template-columns:1fr;
+      }
+
+      .form-grid,
+      .summary-grid{
+        grid-template-columns:1fr;
+      }
+
+      .panel,
+      .table-wrap,
+      .card{
+        padding:16px;
+      }
+
+      .topbar{
+        align-items:stretch;
+      }
+
+      .month-filter,
+      .search-box{
+        width:100%;
+      }
+
+      .topbar h2{
+        font-size:22px;
+      }
+
+      .card .value{
+        font-size:22px;
+      }
+
+      .summary-item strong{
+        font-size:18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <h1>MoMo Tracker</h1>
+      <p>Track daily cash-in commission, cash-out commission, expenses, and monthly net performance.</p>
+    </div>
+
+    <div class="side-box">
+      <h3>Monthly Overview</h3>
+      <div class="side-stat">
+        <small>Net Commission</small>
+        <strong id="sideNet">GHS 0.00</strong>
+      </div>
+      <div class="side-stat">
+        <small>Total Expenses</small>
+        <strong id="sideExpenses">GHS 0.00</strong>
+      </div>
+      <div class="side-stat">
+        <small>Days Recorded</small>
+        <strong id="days">0</strong>
+      </div>
+    </div>
+
+    <div class="side-box">
+      <h3>Best Day</h3>
+      <div class="side-stat">
+        <small>Date</small>
+        <strong id="bestDay">-</strong>
+      </div>
+      <div class="side-stat">
+        <small>Net Value</small>
+        <strong id="bestDayNet">GHS 0.00</strong>
+      </div>
+    </div>
+
+    <div class="side-box">
+      <h3>Formula</h3>
+      <p style="font-size:14px; line-height:1.6; color:rgba(255,255,255,.88);">
+        Net Commission = Cash-In Commission + Cash-Out Commission - Expenses
+      </p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h2>Commission Records</h2>
+      <input type="month" id="monthFilter" class="month-filter">
+    </div>
+
+    <section class="cards">
+      <div class="card">
+        <h4>Cash-In Commission</h4>
+        <div class="value" id="cashInTotal">GHS 0.00</div>
+      </div>
+      <div class="card">
+        <h4>Cash-Out Commission</h4>
+        <div class="value" id="cashOutTotal">GHS 0.00</div>
+      </div>
+      <div class="card">
+        <h4>Expenses</h4>
+        <div class="value" id="expensesTotal">GHS 0.00</div>
+      </div>
+      <div class="card">
+        <h4>Net Commission</h4>
+        <div class="value" id="netTotal">GHS 0.00</div>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="panel">
+        <h3>Add / Edit Record</h3>
+        <form id="form">
+          <input type="hidden" id="recordId">
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="date">Date</label>
+              <input type="date" id="date" required>
+            </div>
+
+            <div class="field">
+              <label for="currency">Currency</label>
+              <select id="currency">
+                <option value="GHS">GHS</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="cin">Cash-In Commission</label>
+              <input type="number" id="cin" min="0" step="0.01" required>
+            </div>
+
+            <div class="field">
+              <label for="cout">Cash-Out Commission</label>
+              <input type="number" id="cout" min="0" step="0.01" required>
+            </div>
+
+            <div class="field">
+              <label for="exp">Expenses</label>
+              <input type="number" id="exp" min="0" step="0.01" value="0">
+            </div>
+
+            <div class="field full">
+              <label for="notes">Notes</label>
+              <input type="text" id="notes" placeholder="Optional note">
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button type="submit" class="btn-primary">Save Record</button>
+            <button type="button" class="btn-secondary" id="clearBtn">Clear Form</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h3>Monthly Summary</h3>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <small>Gross Commission</small>
+            <strong id="grossSummary">GHS 0.00</strong>
+          </div>
+          <div class="summary-item">
+            <small>Net Commission</small>
+            <strong id="netSummary">GHS 0.00</strong>
+          </div>
+          <div class="summary-item">
+            <small>Best Day</small>
+            <strong id="bestSummary">-</strong>
+          </div>
+          <div class="summary-item">
+            <small>Best Net</small>
+            <strong id="bestSummaryNet">GHS 0.00</strong>
+          </div>
+          <div class="summary-item">
+            <small>Average Daily Net</small>
+            <strong id="avgSummary">GHS 0.00</strong>
+          </div>
+          <div class="summary-item">
+            <small>Total Days</small>
+            <strong id="daysSummary">0</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="table-wrap">
+      <div class="table-head">
+        <h3>All Records</h3>
+        <input type="text" id="searchInput" class="search-box" placeholder="Search date or notes">
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Currency</th>
+              <th>Cash-In</th>
+              <th>Cash-Out</th>
+              <th>Expenses</th>
+              <th>Gross</th>
+              <th>Net</th>
+              <th>Notes</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="empty" id="emptyState">No records found for this month.</div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "momo_tracker_records_v2";
+
+    const form = document.getElementById("form");
+    const recordId = document.getElementById("recordId");
+    const dateInput = document.getElementById("date");
+    const currencyInput = document.getElementById("currency");
+    const cinInput = document.getElementById("cin");
+    const coutInput = document.getElementById("cout");
+    const expInput = document.getElementById("exp");
+    const notesInput = document.getElementById("notes");
+    const monthFilter = document.getElementById("monthFilter");
+    const searchInput = document.getElementById("searchInput");
+    const clearBtn = document.getElementById("clearBtn");
+    const tableBody = document.getElementById("tableBody");
+    const emptyState = document.getElementById("emptyState");
+
+    function getRecords() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    }
+
+    function saveRecords(records) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    }
+
+    function formatMoney(value, currency = "GHS") {
+      return `${currency} ${Number(value || 0).toFixed(2)}`;
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      if (isNaN(d)) return dateStr;
+      return d.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    function monthFromDate(dateStr) {
+      return dateStr ? dateStr.slice(0, 7) : "";
+    }
+
+    function gross(record) {
+      return Number(record.cin || 0) + Number(record.cout || 0);
+    }
+
+    function net(record) {
+      return gross(record) - Number(record.exp || 0);
+    }
+
+    function sanitize(text) {
+      return String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function setDefaultMonth() {
+      const now = new Date();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      monthFilter.value = `${now.getFullYear()}-${month}`;
+    }
+
+    function resetForm() {
+      recordId.value = "";
+      form.reset();
+      currencyInput.value = "GHS";
+      expInput.value = "0";
+    }
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const newRecord = {
+        id: recordId.value || Date.now().toString(),
+        date: dateInput.value,
+        currency: currencyInput.value,
+        cin: Number(cinInput.value || 0),
+        cout: Number(coutInput.value || 0),
+        exp: Number(expInput.value || 0),
+        notes: notesInput.value.trim()
+      };
+
+      if (!newRecord.date) {
+        alert("Please select a date.");
+        return;
+      }
+
+      const records = getRecords();
+      const index = records.findIndex(r => r.id === newRecord.id);
+
+      if (index >= 0) {
+        records[index] = newRecord;
+      } else {
+        records.push(newRecord);
+      }
+
+      saveRecords(records);
+      resetForm();
+      render();
+    });
+
+    clearBtn.addEventListener("click", resetForm);
+    monthFilter.addEventListener("change", render);
+    searchInput.addEventListener("input", render);
+
+    function editRecord(id) {
+      const records = getRecords();
+      const rec = records.find(r => r.id === id);
+      if (!rec) return;
+
+      recordId.value = rec.id;
+      dateInput.value = rec.date;
+      currencyInput.value = rec.currency || "GHS";
+      cinInput.value = rec.cin;
+      coutInput.value = rec.cout;
+      expInput.value = rec.exp;
+      notesInput.value = rec.notes || "";
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function deleteRecord(id) {
+      const ok = confirm("Delete this record?");
+      if (!ok) return;
+
+      const records = getRecords().filter(r => r.id !== id);
+      saveRecords(records);
+      render();
+    }
+
+    function filteredRecords() {
+      const selectedMonth = monthFilter.value;
+      const searchText = searchInput.value.trim().toLowerCase();
+
+      return getRecords()
+        .filter(r => monthFromDate(r.date) === selectedMonth)
+        .filter(r => {
+          const text = `${r.date} ${r.notes || ""}`.toLowerCase();
+          return text.includes(searchText);
+        })
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+    }
+
+    function renderSummary(records) {
+      let totalCin = 0;
+      let totalCout = 0;
+      let totalExp = 0;
+      let bestRecord = null;
+
+      records.forEach(r => {
+        totalCin += Number(r.cin || 0);
+        totalCout += Number(r.cout || 0);
+        totalExp += Number(r.exp || 0);
+
+        if (!bestRecord || net(r) > net(bestRecord)) {
+          bestRecord = r;
+        }
+      });
+
+      const grossTotal = totalCin + totalCout;
+      const netTotal = grossTotal - totalExp;
+      const avgNet = records.length ? netTotal / records.length : 0;
+      const currency = records[0]?.currency || "GHS";
+
+      document.getElementById("cashInTotal").textContent = formatMoney(totalCin, currency);
+      document.getElementById("cashOutTotal").textContent = formatMoney(totalCout, currency);
+      document.getElementById("expensesTotal").textContent = formatMoney(totalExp, currency);
+      document.getElementById("netTotal").textContent = formatMoney(netTotal, currency);
+
+      document.getElementById("grossSummary").textContent = formatMoney(grossTotal, currency);
+      document.getElementById("netSummary").textContent = formatMoney(netTotal, currency);
+      document.getElementById("avgSummary").textContent = formatMoney(avgNet, currency);
+      document.getElementById("daysSummary").textContent = records.length;
+
+      document.getElementById("sideNet").textContent = formatMoney(netTotal, currency);
+      document.getElementById("sideExpenses").textContent = formatMoney(totalExp, currency);
+      document.getElementById("days").textContent = records.length;
+
+      if (bestRecord) {
+        const bestNet = net(bestRecord);
+        document.getElementById("bestDay").textContent = formatDate(bestRecord.date);
+        document.getElementById("bestDayNet").textContent = formatMoney(bestNet, bestRecord.currency || currency);
+        document.getElementById("bestSummary").textContent = formatDate(bestRecord.date);
+        document.getElementById("bestSummaryNet").textContent = formatMoney(bestNet, bestRecord.currency || currency);
+      } else {
+        document.getElementById("bestDay").textContent = "-";
+        document.getElementById("bestDayNet").textContent = formatMoney(0, "GHS");
+        document.getElementById("bestSummary").textContent = "-";
+        document.getElementById("bestSummaryNet").textContent = formatMoney(0, "GHS");
+      }
+    }
+
+    function renderTable(records) {
+      tableBody.innerHTML = "";
+
+      if (!records.length) {
+        emptyState.style.display = "block";
+        return;
+      }
+
+      emptyState.style.display = "none";
+
+      let bestId = null;
+      let bestValue = -Infinity;
+
+      records.forEach(r => {
+        const recordNet = net(r);
+        if (recordNet > bestValue) {
+          bestValue = recordNet;
+          bestId = r.id;
+        }
+      });
+
+      records.forEach(r => {
+        const tr = document.createElement("tr");
+        if (r.id === bestId) tr.classList.add("best-row");
+
+        tr.innerHTML = `
+          <td>${formatDate(r.date)}</td>
+          <td>${sanitize(r.currency || "GHS")}</td>
+          <td>${formatMoney(r.cin, r.currency)}</td>
+          <td>${formatMoney(r.cout, r.currency)}</td>
+          <td>${formatMoney(r.exp, r.currency)}</td>
+          <td>${formatMoney(gross(r), r.currency)}</td>
+          <td>${formatMoney(net(r), r.currency)}</td>
+          <td>${sanitize(r.notes || "-")}</td>
+          <td>
+            <div class="actions">
+              <button class="action-btn btn-secondary" onclick="editRecord('${r.id}')">Edit</button>
+              <button class="action-btn btn-danger" onclick="deleteRecord('${r.id}')">Delete</button>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function render() {
+      const records = filteredRecords();
+      renderSummary(records);
+      renderTable(records);
+    }
+
+    setDefaultMonth();
+    resetForm();
+    render();
+
+    window.editRecord = editRecord;
+    window.deleteRecord = deleteRecord;
+  </script>
 </body>
 </html>
