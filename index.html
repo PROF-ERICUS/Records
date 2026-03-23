@@ -500,6 +500,11 @@
     @media (max-width: 560px) {
       .stats { grid-template-columns: 1fr; }
       input, select, textarea { font-size: 16px; }
+      .hide-sm { display: none; }
+      #dashBtn { padding: 10px 12px; border-radius: 10px; }
+      #dashBtn .btn-icon { font-size: 18px; }
+    }
+      input, select, textarea { font-size: 16px; }
     }
   </style>
 </head>
@@ -534,7 +539,7 @@
             <p id="pageSubtitle">Your summary appears first.</p>
           </div>
         </div>
-        <button type="button" class="btn" id="dashBtn">Go to Dashboard</button>
+        <button type="button" class="btn" id="dashBtn"><span class="btn-icon">🏠</span><span class="hide-sm"> Go to Dashboard</span></button>
       </div>
 
       <div class="content">
