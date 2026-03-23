@@ -90,8 +90,12 @@
 
     .nav button {
       text-align: left;
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.12);
       color: #fff;
+      width: 100%;
+      display: block;
+      font-size: 15px;
+      line-height: 1.4;
     }
 
     .nav button.active,
@@ -546,11 +550,11 @@
       </div>
 
       <div class="nav">
-        <button class="nav-link active" data-page="dashboardPage">Dashboard</button>
-        <button class="nav-link" data-page="cashinPage">Cash-In Commission</button>
-        <button class="nav-link" data-page="cashoutPage">Cash-Out Commission</button>
-        <button class="nav-link" data-page="expensesPage">Expenses</button>
-        <button class="nav-link" data-page="recordsPage">Daily Records</button>
+        <button class="nav-link active" data-page="dashboardPage">🏠 Dashboard</button>
+        <button class="nav-link" data-page="cashinPage">➕ Add Cash-In Commission</button>
+        <button class="nav-link" data-page="cashoutPage">➕ Add Cash-Out Commission</button>
+        <button class="nav-link" data-page="expensesPage">➕ Add Expenses</button>
+        <button class="nav-link" data-page="recordsPage">📋 Daily Records</button>
       </div>
 
       <div class="sidebar-actions">
@@ -619,7 +623,12 @@
                     <strong id="monthCommission">GHS 0.00</strong>
                   </div>
                 </div>
-                <p class="helper">Use the side navigation to enter cash-in, cash-out, and expense amounts. The dashboard updates automatically.</p>
+                <p class="helper">Use the left navigation to open <strong>Add Cash-In Commission</strong>, <strong>Add Cash-Out Commission</strong>, or <strong>Add Expenses</strong>. Each saved entry updates the dashboard automatically.</p>
+                <div class="form-actions" style="margin-top:14px;">
+                  <button type="button" class="primary-btn" onclick="goPage('cashinPage')">Open Cash-In Input</button>
+                  <button type="button" class="secondary-btn" onclick="goPage('cashoutPage')">Open Cash-Out Input</button>
+                  <button type="button" class="secondary-btn" onclick="goPage('expensesPage')">Open Expense Input</button>
+                </div>
               </div>
             </div>
 
@@ -812,9 +821,9 @@
     const STORAGE_KEY = 'momo_commission_tracker_v2';
     const TITLES = {
       dashboardPage: ['Dashboard', 'Your main summary appears first.'],
-      cashinPage: ['Cash-In Commission', 'Enter daily cash-in commission here.'],
-      cashoutPage: ['Cash-Out Commission', 'Enter daily cash-out commission here.'],
-      expensesPage: ['Expenses', 'Enter daily expenses here.'],
+      cashinPage: ['Add Cash-In Commission', 'Enter daily cash-in commission here.'],
+      cashoutPage: ['Add Cash-Out Commission', 'Enter daily cash-out commission here.'],
+      expensesPage: ['Add Expenses', 'Enter daily expenses here.'],
       recordsPage: ['Daily Records', 'Open hidden records, sort by date, and make changes.']
     };
 
