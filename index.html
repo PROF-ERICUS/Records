@@ -506,6 +506,60 @@
     }
       input, select, textarea { font-size: 16px; }
     }
+
+    .dash-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px; /* pill shape */
+  background: linear-gradient(135deg, #0f62fe, #2563eb);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Hover effect */
+.dash-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(15, 98, 254, 0.35);
+}
+
+/* Click effect */
+.dash-btn:active {
+  transform: scale(0.96);
+}
+
+/* Icon */
+.btn-icon {
+  font-size: 16px;
+}
+
+/* Text */
+.btn-text {
+  white-space: nowrap;
+}
+
+/* 📱 Mobile clean version */
+@media (max-width: 600px) {
+  .btn-text {
+    display: none;
+  }
+
+  .dash-btn {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%; /* circle */
+  }
+
+  .btn-icon {
+    font-size: 18px;
+  }
+}
   </style>
 </head>
 <body>
@@ -539,7 +593,10 @@
             <p id="pageSubtitle">EricsVault Hub.</p>
           </div>
         </div>
-        <button type="button" class="btn" id="dashBtn"><span class="btn-icon">🏠</span><span class="hide-sm"> Go to Dashboard</span></button>
+       <button type="button" class="dash-btn" id="dashBtn">
+  <span class="btn-icon">🏠</span>
+  <span class="btn-text">Dashboard</span>
+</button>
       </div>
 
       <div class="content">
