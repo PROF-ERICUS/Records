@@ -9,7 +9,7 @@
       --bg:#f4f7fb;
       --card:#ffffff;
       --text:#162033;
-      --muted:#6b7280;
+      --muted:#667085;
       --line:#e5e7eb;
       --primary:#0f62fe;
       --primary-dark:#0b4ed1;
@@ -17,62 +17,62 @@
       --danger:#dc2626;
       --warning:#b45309;
       --sidebar:#0f172a;
-      --sidebar-2:#16264a;
+      --sidebar2:#1e293b;
       --shadow:0 12px 30px rgba(15,23,42,.08);
       --radius:18px;
-      --sidebar-w:280px;
+      --sidebar-w:270px;
     }
-
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
     body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
-
     .app{min-height:100vh}
 
     .sidebar{
-      position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);
-      background:linear-gradient(180deg,var(--sidebar),var(--sidebar-2));color:#fff;
-      padding:20px 16px;z-index:100;overflow-y:auto;transition:transform .25s ease;
+      position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);overflow:auto;
+      background:linear-gradient(180deg,var(--sidebar),var(--sidebar2));color:#fff;padding:20px 16px;z-index:100;
+      transition:transform .25s ease;
     }
-    .sidebar h1{margin:0;font-size:24px}
-    .sidebar p{margin:8px 0 18px;color:rgba(255,255,255,.75);font-size:13px;line-height:1.5}
+    .brand h1{margin:0;font-size:24px}
+    .brand p{margin:8px 0 18px;color:rgba(255,255,255,.75);font-size:13px;line-height:1.5}
     .nav{display:grid;gap:10px}
-    .nav button,.side-actions button,.top-btn,button[type='submit'],.secondary,.table-btn{
+    .nav button,.side-actions button,.btn,.table-btn{
       border:0;border-radius:12px;padding:12px 14px;font-size:14px;font-weight:700;cursor:pointer
     }
     .nav button{width:100%;text-align:left;background:rgba(255,255,255,.12);color:#fff}
-    .nav button:hover,.nav button.active{background:rgba(255,255,255,.22)}
+    .nav button:hover,.nav button.active{background:rgba(255,255,255,.24)}
     .side-actions{display:grid;gap:10px;margin-top:18px}
     .ghost{background:rgba(255,255,255,.1);color:#fff}
     .danger{background:rgba(220,38,38,.18);color:#fff}
 
     .main{margin-left:var(--sidebar-w);min-height:100vh}
     .topbar{
-      position:sticky;top:0;z-index:50;background:rgba(244,247,251,.92);backdrop-filter:blur(8px);
-      border-bottom:1px solid var(--line);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px
+      position:sticky;top:0;z-index:60;background:rgba(244,247,251,.94);backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--line);padding:14px 20px;display:flex;justify-content:space-between;gap:12px;align-items:center
     }
     .topbar-left{display:flex;align-items:center;gap:12px;min-width:0}
-    .menu-btn{display:none;background:#fff;border:1px solid var(--line);color:var(--text)}
+    .menu-btn{display:none}
     .topbar h2{margin:0;font-size:20px}
     .topbar p{margin:4px 0 0;color:var(--muted);font-size:13px}
-    .top-btn{background:var(--primary);color:#fff}
-    .top-btn:hover,button[type='submit']:hover{background:var(--primary-dark)}
 
-    .content{padding:22px}
+    .content{padding:20px}
     .page{display:none}
     .page.active{display:block}
+
+    .btn{background:var(--primary);color:#fff}
+    .btn:hover{background:var(--primary-dark)}
+    .btn.secondary{background:#fff;color:var(--text);border:1px solid var(--line)}
 
     .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}
     .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
     .stat{padding:18px;background:linear-gradient(180deg,#fff,#f8fbff)}
-    .stat small{display:block;font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
+    .stat small{display:block;margin-bottom:10px;font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
     .stat strong{display:block;font-size:24px;line-height:1.2}
     .income strong{color:var(--success)}
     .expense strong{color:var(--danger)}
     .net strong{color:var(--primary)}
     .count strong{color:var(--warning)}
 
-    .grid-2{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+    .grid-2{display:grid;grid-template-columns:1.45fr 1fr;gap:18px}
     .card-header{padding:18px 18px 10px}
     .card-header h3{margin:0;font-size:19px}
     .card-header p{margin:8px 0 0;color:var(--muted);font-size:14px}
@@ -80,29 +80,27 @@
 
     .summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
     .mini{border:1px solid var(--line);border-radius:16px;padding:16px;background:#f8fbff}
-    .mini span{display:block;font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
-    .mini strong{font-size:18px;line-height:1.35;display:block}
+    .mini span{display:block;margin-bottom:8px;font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+    .mini strong{display:block;font-size:18px;line-height:1.35}
 
     .quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-    .secondary{background:#fff;color:var(--text);border:1px solid var(--line)}
-
     .recent-list{display:grid;gap:12px}
     .recent-item{display:flex;justify-content:space-between;gap:12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff}
     .recent-item h4{margin:0 0 6px;font-size:14px}
     .recent-item p{margin:0;color:var(--muted);font-size:13px}
     .recent-item strong{white-space:nowrap;font-size:14px}
 
-    .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-    .field{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
-    .field.full{grid-column:1/-1}
-    label{font-size:13px;font-weight:700;color:#334155}
+    .entry-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .entry-box{border:1px solid var(--line);border-radius:16px;padding:16px;background:#f8fbff}
+    .entry-box h4{margin:0 0 14px;font-size:16px}
+
+    .field{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+    .field label{font-size:13px;font-weight:700;color:#334155}
     input,select,textarea{
-      width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;outline:none;background:#fff
+      width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;background:#fff;outline:none
     }
     input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(15,98,254,.12)}
-    textarea{min-height:96px;resize:vertical}
-    .form-actions{display:flex;gap:10px;flex-wrap:wrap}
-    button[type='submit']{background:var(--primary);color:#fff}
+    textarea{min-height:90px;resize:vertical}
 
     .record-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
     .record-panel{display:none}
@@ -115,50 +113,45 @@
     .badge-income{background:rgba(21,128,61,.12);color:var(--success)}
     .badge-expense{background:rgba(220,38,38,.1);color:var(--danger)}
     .table-actions{display:flex;gap:8px;flex-wrap:wrap}
-    .edit-btn{background:var(--primary);color:#fff}
-    .delete-btn{background:#fef2f2;color:var(--danger)}
+    .table-btn.edit{background:var(--primary);color:#fff}
+    .table-btn.delete{background:#fef2f2;color:var(--danger)}
     .empty{display:none;text-align:center;padding:28px 16px;color:var(--muted)}
     .helper{margin-top:10px;color:var(--muted);font-size:13px}
 
     .overlay{position:fixed;inset:0;background:rgba(15,23,42,.42);opacity:0;visibility:hidden;transition:.2s;z-index:90}
     .overlay.show{opacity:1;visibility:visible}
 
-    @media (max-width:1180px){.stats{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}
+    @media (max-width:1180px){.stats{grid-template-columns:repeat(2,1fr)}.grid-2,.entry-grid{grid-template-columns:1fr}}
     @media (max-width:980px){
       .sidebar{transform:translateX(-100%)}
       .sidebar.open{transform:translateX(0)}
       .main{margin-left:0}
-      .menu-btn{display:inline-block}
+      .menu-btn{display:inline-block;border:1px solid var(--line);background:#fff;color:var(--text)}
       .content{padding:16px}
       .topbar{padding:12px 16px}
     }
     @media (max-width:768px){
-      .stats,.summary-grid,.form-grid,.filters{grid-template-columns:1fr}
-      .form-actions,.quick-actions,.record-tools,.table-actions{flex-direction:column}
-      .form-actions button,.quick-actions button,.record-tools button,.table-actions button,.top-btn{width:100%}
+      .stats,.summary-grid,.filters{grid-template-columns:1fr}
+      .quick-actions,.record-tools,.table-actions{flex-direction:column}
+      .quick-actions .btn,.record-tools .btn,.table-actions .table-btn,.topbar .btn{width:100%}
+      .recent-item{flex-direction:column}
       .stat strong{font-size:20px}
     }
-    @media (max-width:560px){
-      .stats{grid-template-columns:1fr}
-      .recent-item{flex-direction:column}
-      input,select,textarea{font-size:16px}
-    }
+    @media (max-width:560px){.stats{grid-template-columns:1fr} input,select,textarea{font-size:16px}}
   </style>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar" id="sidebar">
-      <h1>MoMo Tracker</h1>
-      <p>Dashboard first. Add cash-in, cash-out, expenses, then review hidden daily records.</p>
-
+      <div class="brand">
+        <h1>MoMo Tracker</h1>
+        <p>Dashboard first. Enter your daily cash-in, cash-out, and expenses easily.</p>
+      </div>
       <div class="nav">
         <button class="nav-link active" data-page="dashboardPage">🏠 Dashboard</button>
-        <button class="nav-link" data-page="cashinPage">➕ Add Cash-In Commission</button>
-        <button class="nav-link" data-page="cashoutPage">➕ Add Cash-Out Commission</button>
-        <button class="nav-link" data-page="expensesPage">➕ Add Expenses</button>
+        <button class="nav-link" data-page="entryPage">➕ Daily Entry</button>
         <button class="nav-link" data-page="recordsPage">📋 Daily Records</button>
       </div>
-
       <div class="side-actions">
         <button class="ghost" id="exportBtn">Export CSV</button>
         <button class="danger" id="clearBtn">Clear All</button>
@@ -173,10 +166,10 @@
           <button class="menu-btn" id="menuBtn">☰</button>
           <div>
             <h2 id="pageTitle">Dashboard</h2>
-            <p id="pageSubtitle">Your main summary appears first.</p>
+            <p id="pageSubtitle">Your summary appears first.</p>
           </div>
         </div>
-        <button class="top-btn" id="dashBtn">Go to Dashboard</button>
+        <button class="btn" id="dashBtn">Go to Dashboard</button>
       </div>
 
       <div class="content">
@@ -192,7 +185,7 @@
             <div class="card">
               <div class="card-header">
                 <h3>Dashboard Summary</h3>
-                <p>The dashboard updates automatically from your daily entries.</p>
+                <p>All results update when you save your daily entry.</p>
               </div>
               <div class="card-body">
                 <div class="summary-grid">
@@ -202,9 +195,8 @@
                   <div class="mini"><span>This Month Commission</span><strong id="monthCommission">GHS 0.00</strong></div>
                 </div>
                 <div class="quick-actions">
-                  <button class="top-btn" onclick="goPage('cashinPage')">Open Cash-In Input</button>
-                  <button class="secondary" onclick="goPage('cashoutPage')">Open Cash-Out Input</button>
-                  <button class="secondary" onclick="goPage('expensesPage')">Open Expense Input</button>
+                  <button class="btn" id="openEntryBtn">Open Daily Entry</button>
+                  <button class="btn secondary" id="openRecordsBtn">Open Daily Records</button>
                 </div>
               </div>
             </div>
@@ -216,96 +208,115 @@
               </div>
               <div class="card-body">
                 <div class="recent-list" id="recentList"></div>
-                <div class="helper">Open Daily Records when you want to sort by date, edit, or delete.</div>
+                <div class="helper">Use Daily Entry to enter your commissions. Use Daily Records to edit old entries.</div>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="page" id="cashinPage">
+        <section class="page" id="entryPage">
           <div class="card">
-            <div class="card-header"><h3>Add Cash-In Commission</h3><p>Enter the daily cash-in commission for any date.</p></div>
-            <div class="card-body">
-              <form id="cashinForm">
-                <div class="form-grid">
-                  <div class="field"><label for="cashinDate">Date</label><input type="date" id="cashinDate" required></div>
-                  <div class="field"><label for="cashinCurrency">Currency</label><select id="cashinCurrency"><option>GHS</option><option>USD</option><option>EUR</option></select></div>
-                  <div class="field full"><label for="cashinAmount">Cash-In Commission</label><input type="number" id="cashinAmount" min="0" step="0.01" placeholder="0.00" required></div>
-                  <div class="field full"><label for="cashinNote">Note</label><textarea id="cashinNote" placeholder="Optional note"></textarea></div>
-                </div>
-                <div class="form-actions">
-                  <button type="submit">Save Cash-In</button>
-                  <button type="button" class="secondary" onclick="goPage('dashboardPage')">Back to Dashboard</button>
-                </div>
-              </form>
+            <div class="card-header">
+              <h3>Daily Entry</h3>
+              <p>Enter all your daily values here at once, then save.</p>
             </div>
-          </div>
-        </section>
-
-        <section class="page" id="cashoutPage">
-          <div class="card">
-            <div class="card-header"><h3>Add Cash-Out Commission</h3><p>Enter the daily cash-out commission for any date.</p></div>
             <div class="card-body">
-              <form id="cashoutForm">
-                <div class="form-grid">
-                  <div class="field"><label for="cashoutDate">Date</label><input type="date" id="cashoutDate" required></div>
-                  <div class="field"><label for="cashoutCurrency">Currency</label><select id="cashoutCurrency"><option>GHS</option><option>USD</option><option>EUR</option></select></div>
-                  <div class="field full"><label for="cashoutAmount">Cash-Out Commission</label><input type="number" id="cashoutAmount" min="0" step="0.01" placeholder="0.00" required></div>
-                  <div class="field full"><label for="cashoutNote">Note</label><textarea id="cashoutNote" placeholder="Optional note"></textarea></div>
+              <div class="entry-grid">
+                <div class="entry-box">
+                  <div class="field">
+                    <label for="entryDate">Date</label>
+                    <input type="date" id="entryDate" />
+                  </div>
+                  <div class="field">
+                    <label for="entryCurrency">Currency</label>
+                    <select id="entryCurrency">
+                      <option>GHS</option>
+                      <option>USD</option>
+                      <option>EUR</option>
+                    </select>
+                  </div>
                 </div>
-                <div class="form-actions">
-                  <button type="submit">Save Cash-Out</button>
-                  <button type="button" class="secondary" onclick="goPage('dashboardPage')">Back to Dashboard</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </section>
 
-        <section class="page" id="expensesPage">
-          <div class="card">
-            <div class="card-header"><h3>Add Expenses</h3><p>Enter daily expenses for any date.</p></div>
-            <div class="card-body">
-              <form id="expenseForm">
-                <div class="form-grid">
-                  <div class="field"><label for="expenseDate">Date</label><input type="date" id="expenseDate" required></div>
-                  <div class="field"><label for="expenseCurrency">Currency</label><select id="expenseCurrency"><option>GHS</option><option>USD</option><option>EUR</option></select></div>
-                  <div class="field full"><label for="expenseAmount">Expenses</label><input type="number" id="expenseAmount" min="0" step="0.01" placeholder="0.00" required></div>
-                  <div class="field full"><label for="expenseNote">Note</label><textarea id="expenseNote" placeholder="Optional note"></textarea></div>
+                <div class="entry-box">
+                  <h4>Commission Input</h4>
+                  <div class="field">
+                    <label for="entryCashin">Cash-In Commission</label>
+                    <input type="number" id="entryCashin" min="0" step="0.01" placeholder="0.00" />
+                  </div>
+                  <div class="field">
+                    <label for="entryCashout">Cash-Out Commission</label>
+                    <input type="number" id="entryCashout" min="0" step="0.01" placeholder="0.00" />
+                  </div>
                 </div>
-                <div class="form-actions">
-                  <button type="submit">Save Expense</button>
-                  <button type="button" class="secondary" onclick="goPage('dashboardPage')">Back to Dashboard</button>
+
+                <div class="entry-box">
+                  <h4>Expense Input</h4>
+                  <div class="field">
+                    <label for="entryExpense">Expenses</label>
+                    <input type="number" id="entryExpense" min="0" step="0.01" placeholder="0.00" />
+                  </div>
+                  <div class="field">
+                    <label for="entryNote">Note</label>
+                    <textarea id="entryNote" placeholder="Optional note for the day"></textarea>
+                  </div>
                 </div>
-              </form>
+              </div>
+
+              <div class="quick-actions" style="margin-top:16px;">
+                <button class="btn" id="saveEntryBtn">Save Daily Entry</button>
+                <button class="btn secondary" id="resetEntryBtn">Reset Entry</button>
+                <button class="btn secondary" id="backDashBtn">Back to Dashboard</button>
+              </div>
+              <div class="helper">This is the main place to enter your commissions.</div>
             </div>
           </div>
         </section>
 
         <section class="page" id="recordsPage">
           <div class="card">
-            <div class="card-header"><h3>Daily Records</h3><p>Hidden by default. Open it when you want to sort by date and make changes.</p></div>
+            <div class="card-header">
+              <h3>Daily Records</h3>
+              <p>Hidden by default. Open them only when you want to sort, edit, or delete.</p>
+            </div>
             <div class="card-body">
               <div class="record-tools">
-                <button class="top-btn" id="showRecordsBtn">Show Daily Records</button>
-                <button class="secondary" id="hideRecordsBtn">Hide Daily Records</button>
+                <button class="btn" id="showRecordsBtn">Show Daily Records</button>
+                <button class="btn secondary" id="hideRecordsBtn">Hide Daily Records</button>
               </div>
 
               <div class="record-panel" id="recordPanel">
                 <div class="filters">
-                  <div class="field" style="margin:0"><label for="monthFilter">Filter by Month</label><input type="month" id="monthFilter"></div>
-                  <div class="field" style="margin:0"><label for="sortDate">Sort by Date</label><select id="sortDate"><option value="desc">Newest First</option><option value="asc">Oldest First</option></select></div>
+                  <div class="field" style="margin:0;">
+                    <label for="monthFilter">Filter by Month</label>
+                    <input type="month" id="monthFilter" />
+                  </div>
+                  <div class="field" style="margin:0;">
+                    <label for="sortDate">Sort by Date</label>
+                    <select id="sortDate">
+                      <option value="desc">Newest First</option>
+                      <option value="asc">Oldest First</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="table-wrap">
                   <table>
                     <thead>
-                      <tr><th>Date</th><th>Currency</th><th>Cash-In</th><th>Cash-Out</th><th>Expenses</th><th>Net</th><th>Note</th><th>Action</th></tr>
+                      <tr>
+                        <th>Date</th>
+                        <th>Currency</th>
+                        <th>Cash-In</th>
+                        <th>Cash-Out</th>
+                        <th>Expenses</th>
+                        <th>Net</th>
+                        <th>Note</th>
+                        <th>Action</th>
+                      </tr>
                     </thead>
                     <tbody id="recordTableBody"></tbody>
                   </table>
                 </div>
-                <div class="empty" id="emptyState">No records yet. Add your first entry from cash-in, cash-out, or expenses.</div>
+                <div class="empty" id="emptyState">No records yet. Add your first daily entry.</div>
               </div>
             </div>
           </div>
@@ -315,13 +326,11 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'momo_tracker_v3';
+    const STORAGE_KEY = 'momo_tracker_v4';
     const TITLES = {
-      dashboardPage: ['Dashboard','Your main summary appears first.'],
-      cashinPage: ['Add Cash-In Commission','Enter daily cash-in commission here.'],
-      cashoutPage: ['Add Cash-Out Commission','Enter daily cash-out commission here.'],
-      expensesPage: ['Add Expenses','Enter daily expenses here.'],
-      recordsPage: ['Daily Records','Open hidden records, sort by date, and make changes.']
+      dashboardPage: ['Dashboard', 'Your summary appears first.'],
+      entryPage: ['Daily Entry', 'Enter your daily commissions and expenses here.'],
+      recordsPage: ['Daily Records', 'Open hidden records, sort by date, and make changes.']
     };
 
     const sidebar = document.getElementById('sidebar');
@@ -338,81 +347,81 @@
     const emptyState = document.getElementById('emptyState');
 
     function todayYMD(){
-      const d=new Date();
-      const y=d.getFullYear();
-      const m=String(d.getMonth()+1).padStart(2,'0');
-      const day=String(d.getDate()).padStart(2,'0');
-      return `${y}-${m}-${day}`;
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     }
-
-    function money(v,c='GHS'){ return `${c} ${Number(v||0).toFixed(2)}`; }
-    function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
-    function getRecords(){ return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); }
+    function money(v,c='GHS'){ return `${c} ${Number(v || 0).toFixed(2)}`; }
+    function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+    function getRecords(){ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
     function saveRecords(records){ localStorage.setItem(STORAGE_KEY, JSON.stringify(records)); }
-    function net(r){ return Number(r.cashin||0)+Number(r.cashout||0)-Number(r.expense||0); }
-
-    function getOrCreateByDate(date,currency){
-      const records = getRecords();
-      let rec = records.find(r => r.date === date);
-      if(!rec){
-        rec = { id: uid(), date, currency: currency || 'GHS', cashin: 0, cashout: 0, expense: 0, note: '' };
-        records.push(rec);
-      }
-      saveRecords(records);
-      return rec;
-    }
-
-    function updateByDate(date,currency,patch){
-      const records = getRecords();
-      let rec = records.find(r => r.date === date);
-      if(!rec){
-        rec = { id: uid(), date, currency: currency || 'GHS', cashin: 0, cashout: 0, expense: 0, note: '' };
-        records.push(rec);
-      }
-      rec.currency = currency || rec.currency || 'GHS';
-      if(patch.cashin !== undefined) rec.cashin = Number(patch.cashin || 0);
-      if(patch.cashout !== undefined) rec.cashout = Number(patch.cashout || 0);
-      if(patch.expense !== undefined) rec.expense = Number(patch.expense || 0);
-      if(patch.note !== undefined) rec.note = String(patch.note || '');
-      saveRecords(records);
-      renderAll();
-    }
-
-    function deleteRecord(id){
-      if(!confirm('Delete this daily record?')) return;
-      const records = getRecords().filter(r => r.id !== id);
-      saveRecords(records);
-      renderAll();
-    }
-    window.deleteRecord = deleteRecord;
+    function net(r){ return Number(r.cashin || 0) + Number(r.cashout || 0) - Number(r.expense || 0); }
 
     function goPage(pageId){
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       const page = document.getElementById(pageId);
-      if(page) page.classList.add('active');
+      if (page) page.classList.add('active');
       document.querySelectorAll('.nav-link').forEach(btn => btn.classList.toggle('active', btn.dataset.page === pageId));
-      const info = TITLES[pageId] || ['Dashboard',''];
+      const info = TITLES[pageId] || TITLES.dashboardPage;
       pageTitle.textContent = info[0];
       pageSubtitle.textContent = info[1];
       closeMenu();
-      window.scrollTo({top:0, behavior:'smooth'});
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     window.goPage = goPage;
 
     function openMenu(){ sidebar.classList.add('open'); overlay.classList.add('show'); }
     function closeMenu(){ sidebar.classList.remove('open'); overlay.classList.remove('show'); }
 
+    function setDefaultEntry(){
+      document.getElementById('entryDate').value = todayYMD();
+      document.getElementById('entryCurrency').value = 'GHS';
+      document.getElementById('entryCashin').value = '';
+      document.getElementById('entryCashout').value = '';
+      document.getElementById('entryExpense').value = '';
+      document.getElementById('entryNote').value = '';
+      monthFilter.value = todayYMD().slice(0,7);
+    }
+
+    function saveEntry(){
+      const date = document.getElementById('entryDate').value;
+      const currency = document.getElementById('entryCurrency').value;
+      const cashin = Number(document.getElementById('entryCashin').value || 0);
+      const cashout = Number(document.getElementById('entryCashout').value || 0);
+      const expense = Number(document.getElementById('entryExpense').value || 0);
+      const note = document.getElementById('entryNote').value.trim();
+
+      if (!date) {
+        alert('Please choose a date.');
+        return;
+      }
+
+      const records = getRecords();
+      let rec = records.find(r => r.date === date);
+      if (!rec) {
+        rec = { id: uid(), date, currency, cashin: 0, cashout: 0, expense: 0, note: '' };
+        records.push(rec);
+      }
+      rec.currency = currency;
+      rec.cashin = cashin;
+      rec.cashout = cashout;
+      rec.expense = expense;
+      rec.note = note;
+      saveRecords(records);
+      renderAll();
+      goPage('dashboardPage');
+    }
+
     function renderSummary(records){
-      const totalCommission = records.reduce((s,r)=>s+Number(r.cashin||0)+Number(r.cashout||0),0);
-      const totalExpenses = records.reduce((s,r)=>s+Number(r.expense||0),0);
-      const totalNet = records.reduce((s,r)=>s+net(r),0);
-      document.getElementById('totalCommission').textContent = money(totalCommission,'GHS');
-      document.getElementById('totalExpenses').textContent = money(totalExpenses,'GHS');
-      document.getElementById('totalNet').textContent = money(totalNet,'GHS');
+      const totalCommission = records.reduce((s,r) => s + Number(r.cashin || 0) + Number(r.cashout || 0), 0);
+      const totalExpenses = records.reduce((s,r) => s + Number(r.expense || 0), 0);
+      const totalNet = records.reduce((s,r) => s + net(r), 0);
+      document.getElementById('totalCommission').textContent = money(totalCommission, 'GHS');
+      document.getElementById('totalExpenses').textContent = money(totalExpenses, 'GHS');
+      document.getElementById('totalNet').textContent = money(totalNet, 'GHS');
       document.getElementById('recordCount').textContent = String(records.length);
 
-      if(records.length){
-        const best = [...records].sort((a,b)=>net(b)-net(a))[0];
+      if (records.length) {
+        const best = [...records].sort((a,b) => net(b) - net(a))[0];
         document.getElementById('bestDay').textContent = `${best.date} (${money(net(best), best.currency)})`;
       } else {
         document.getElementById('bestDay').textContent = '-';
@@ -420,19 +429,19 @@
 
       const month = monthFilter.value || todayYMD().slice(0,7);
       const monthRows = records.filter(r => r.date.startsWith(month));
-      document.getElementById('monthNet').textContent = money(monthRows.reduce((s,r)=>s+net(r),0),'GHS');
-      document.getElementById('monthExpenses').textContent = money(monthRows.reduce((s,r)=>s+Number(r.expense||0),0),'GHS');
-      document.getElementById('monthCommission').textContent = money(monthRows.reduce((s,r)=>s+Number(r.cashin||0)+Number(r.cashout||0),0),'GHS');
+      document.getElementById('monthNet').textContent = money(monthRows.reduce((s,r)=>s+net(r),0), 'GHS');
+      document.getElementById('monthExpenses').textContent = money(monthRows.reduce((s,r)=>s+Number(r.expense || 0),0), 'GHS');
+      document.getElementById('monthCommission').textContent = money(monthRows.reduce((s,r)=>s+Number(r.cashin || 0)+Number(r.cashout || 0),0), 'GHS');
     }
 
     function renderRecent(records){
       recentList.innerHTML = '';
-      const items = [...records].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
-      if(!items.length){
-        recentList.innerHTML = '<div class="mini"><span>No data yet</span><strong>Add your first entry from the menu.</strong></div>';
+      const rows = [...records].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+      if (!rows.length) {
+        recentList.innerHTML = '<div class="mini"><span>No data yet</span><strong>Open Daily Entry and save your first commission record.</strong></div>';
         return;
       }
-      items.forEach(r => {
+      rows.forEach(r => {
         const div = document.createElement('div');
         div.className = 'recent-item';
         div.innerHTML = `<div><h4>${r.date}</h4><p>Cash-In: ${money(r.cashin,r.currency)} · Cash-Out: ${money(r.cashout,r.currency)} · Expenses: ${money(r.expense,r.currency)}</p></div><strong>${money(net(r),r.currency)}</strong>`;
@@ -442,10 +451,13 @@
 
     function renderTable(records){
       const month = monthFilter.value.trim();
-      let rows = records.filter(r => !month || r.date.startsWith(month));
-      rows.sort((a,b) => sortDate.value === 'asc' ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date));
+      const rows = records
+        .filter(r => !month || r.date.startsWith(month))
+        .sort((a,b) => sortDate.value === 'asc' ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date));
+
       tbody.innerHTML = '';
       emptyState.style.display = rows.length ? 'none' : 'block';
+
       rows.forEach(r => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -458,8 +470,8 @@
           <td>${(r.note || '-').replace(/</g,'&lt;')}</td>
           <td>
             <div class="table-actions">
-              <button class="table-btn edit-btn" onclick="editRecord('${r.id}')">Edit</button>
-              <button class="table-btn delete-btn" onclick="deleteRecord('${r.id}')">Delete</button>
+              <button class="table-btn edit" data-id="${r.id}">Edit</button>
+              <button class="table-btn delete" data-id="${r.id}">Delete</button>
             </div>
           </td>`;
         tbody.appendChild(tr);
@@ -473,99 +485,79 @@
       renderTable(records);
     }
 
-    function fillFormsFromRecord(rec){
-      document.getElementById('cashinDate').value = rec.date;
-      document.getElementById('cashinCurrency').value = rec.currency;
-      document.getElementById('cashinAmount').value = Number(rec.cashin || 0);
-      document.getElementById('cashinNote').value = rec.note || '';
-
-      document.getElementById('cashoutDate').value = rec.date;
-      document.getElementById('cashoutCurrency').value = rec.currency;
-      document.getElementById('cashoutAmount').value = Number(rec.cashout || 0);
-      document.getElementById('cashoutNote').value = rec.note || '';
-
-      document.getElementById('expenseDate').value = rec.date;
-      document.getElementById('expenseCurrency').value = rec.currency;
-      document.getElementById('expenseAmount').value = Number(rec.expense || 0);
-      document.getElementById('expenseNote').value = rec.note || '';
-    }
-
-    function setDefaults(){
-      const t = todayYMD();
-      document.getElementById('cashinDate').value = t;
-      document.getElementById('cashoutDate').value = t;
-      document.getElementById('expenseDate').value = t;
-      monthFilter.value = t.slice(0,7);
-    }
-
-    window.editRecord = function(id){
+    function editRecord(id){
       const rec = getRecords().find(r => r.id === id);
-      if(!rec) return;
-      fillFormsFromRecord(rec);
-      goPage('cashinPage');
-    };
+      if (!rec) return;
+      document.getElementById('entryDate').value = rec.date;
+      document.getElementById('entryCurrency').value = rec.currency;
+      document.getElementById('entryCashin').value = Number(rec.cashin || 0);
+      document.getElementById('entryCashout').value = Number(rec.cashout || 0);
+      document.getElementById('entryExpense').value = Number(rec.expense || 0);
+      document.getElementById('entryNote').value = rec.note || '';
+      goPage('entryPage');
+    }
+
+    function deleteRecord(id){
+      if (!confirm('Delete this record?')) return;
+      const records = getRecords().filter(r => r.id !== id);
+      saveRecords(records);
+      renderAll();
+    }
 
     menuBtn.addEventListener('click', () => sidebar.classList.contains('open') ? closeMenu() : openMenu());
     overlay.addEventListener('click', closeMenu);
     dashBtn.addEventListener('click', () => goPage('dashboardPage'));
+    document.getElementById('openEntryBtn').addEventListener('click', () => goPage('entryPage'));
+    document.getElementById('openRecordsBtn').addEventListener('click', () => goPage('recordsPage'));
+    document.getElementById('backDashBtn').addEventListener('click', () => goPage('dashboardPage'));
     document.querySelectorAll('.nav-link').forEach(btn => btn.addEventListener('click', () => goPage(btn.dataset.page)));
+
+    document.getElementById('saveEntryBtn').addEventListener('click', saveEntry);
+    document.getElementById('resetEntryBtn').addEventListener('click', setDefaultEntry);
 
     document.getElementById('showRecordsBtn').addEventListener('click', () => { recordPanel.style.display = 'block'; renderAll(); });
     document.getElementById('hideRecordsBtn').addEventListener('click', () => { recordPanel.style.display = 'none'; });
     monthFilter.addEventListener('input', renderAll);
     sortDate.addEventListener('change', renderAll);
 
-    document.getElementById('cashinForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      updateByDate(
-        document.getElementById('cashinDate').value,
-        document.getElementById('cashinCurrency').value,
-        { cashin: document.getElementById('cashinAmount').value, note: document.getElementById('cashinNote').value }
-      );
-      goPage('dashboardPage');
+    tbody.addEventListener('click', (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLElement)) return;
+      const id = target.getAttribute('data-id');
+      if (!id) return;
+      if (target.classList.contains('edit')) editRecord(id);
+      if (target.classList.contains('delete')) deleteRecord(id);
     });
 
-    document.getElementById('cashoutForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      updateByDate(
-        document.getElementById('cashoutDate').value,
-        document.getElementById('cashoutCurrency').value,
-        { cashout: document.getElementById('cashoutAmount').value, note: document.getElementById('cashoutNote').value }
-      );
-      goPage('dashboardPage');
-    });
-
-    document.getElementById('expenseForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      updateByDate(
-        document.getElementById('expenseDate').value,
-        document.getElementById('expenseCurrency').value,
-        { expense: document.getElementById('expenseAmount').value, note: document.getElementById('expenseNote').value }
-      );
-      goPage('dashboardPage');
-    });
-
-    document.getElementById('exportBtn').addEventListener('click', function(){
+    document.getElementById('exportBtn').addEventListener('click', () => {
       const records = getRecords();
-      if(!records.length){ alert('No data to export.'); return; }
-      const rows = [ ['Date','Currency','Cash-In','Cash-Out','Expenses','Net','Note'], ...records.map(r => [r.date,r.currency,r.cashin,r.cashout,r.expense,net(r),(r.note||'').replace(/,/g,' ')]) ];
+      if (!records.length) { alert('No data to export.'); return; }
+      const rows = [
+        ['Date','Currency','Cash-In','Cash-Out','Expenses','Net','Note'],
+        ...records.map(r => [r.date,r.currency,r.cashin,r.cashout,r.expense,net(r),(r.note || '').replace(/,/g,' ')])
+      ];
       const csv = rows.map(row => row.map(v => `"${String(v)}"`).join(',')).join('
 ');
       const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url; a.download = 'momo-tracker-records.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      a.href = url;
+      a.download = 'momo-tracker-records.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
     });
 
-    document.getElementById('clearBtn').addEventListener('click', function(){
-      if(!confirm('Clear all saved records?')) return;
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      if (!confirm('Clear all saved records?')) return;
       localStorage.removeItem(STORAGE_KEY);
-      setDefaults();
+      setDefaultEntry();
       renderAll();
       goPage('dashboardPage');
     });
 
-    setDefaults();
+    setDefaultEntry();
     renderAll();
   </script>
 </body>
