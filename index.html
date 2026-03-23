@@ -316,23 +316,174 @@
       font-size: 13px;
     }
 
-    @media (max-width: 980px) {
-      .grid,
-      .summary,
-      .stats,
-      .form-grid {
+    @media (max-width: 1180px) {
+      .wrap {
+        padding: 18px;
+      }
+
+      .grid {
         grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 640px) {
-      .wrap { padding: 16px; }
-      .brand h1 { font-size: 22px; }
-      .card-header, .card-body { padding: 16px; }
-      button { width: 100%; }
-      .actions { width: 100%; }
-      .actions button { flex: 1 1 100%; }
-      .toolbar input { max-width: 100%; }
+    @media (max-width: 980px) {
+      .stats,
+      .summary,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .actions {
+        width: 100%;
+      }
+
+      .actions button {
+        flex: 1 1 220px;
+      }
+
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .toolbar input {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .wrap {
+        padding: 14px;
+      }
+
+      .brand h1 {
+        font-size: 22px;
+        line-height: 1.25;
+      }
+
+      .brand p {
+        font-size: 13px;
+      }
+
+      .card-header,
+      .card-body {
+        padding: 14px;
+      }
+
+      .stats {
+        gap: 12px;
+      }
+
+      .stat {
+        padding: 14px;
+      }
+
+      .stat strong {
+        font-size: 20px;
+        word-break: break-word;
+      }
+
+      .summary {
+        gap: 12px;
+      }
+
+      .mini {
+        padding: 14px;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border-radius: 14px;
+      }
+
+      table {
+        min-width: 680px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .wrap {
+        padding: 12px;
+      }
+
+      .topbar {
+        margin-bottom: 18px;
+      }
+
+      .actions {
+        gap: 8px;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px 14px;
+      }
+
+      .actions button {
+        flex: 1 1 100%;
+      }
+
+      .card {
+        border-radius: 14px;
+      }
+
+      .card-header h2,
+      .card-header h3 {
+        font-size: 18px;
+      }
+
+      input,
+      select,
+      textarea {
+        font-size: 16px;
+        padding: 12px;
+      }
+
+      .stat small,
+      .mini span {
+        font-size: 11px;
+      }
+
+      .stat strong,
+      .mini strong {
+        font-size: 18px;
+      }
+
+      .row-actions {
+        flex-direction: column;
+      }
+
+      .row-actions button {
+        width: 100%;
+      }
+
+      table {
+        min-width: 620px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .brand h1 {
+        font-size: 20px;
+      }
+
+      .card-header,
+      .card-body {
+        padding: 12px;
+      }
+
+      .stat,
+      .mini {
+        padding: 12px;
+      }
+
+      .footer-note {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
